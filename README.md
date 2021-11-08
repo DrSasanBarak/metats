@@ -1,2 +1,3 @@
-# meta-pythia
-MetaPythia | Meta Learning for Time Series Forecasting
+# MetaPythia | Time Series Forecasting using Meta Learning
+A Meta Learning Library for Advanced Time Series Forecasting in Python
+
