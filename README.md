@@ -1,6 +1,12 @@
-# MetaTS | Time Series Forecasting using Meta Learning
-A Meta Learning Library for Advanced Time Series Forecasting in Python
+# MetaTS | Meta-Learning for Global Time Series Forecasting
 
-Features:
-- Generating various features for time series (statistical features, automated features)
-- Meta-Learning on user defined models or on an automated generated family of models 
+## Features
+- Generating meta features
+    - Statistical features : TsFeatures, TsFresh, User defined features
+    - Automated feature extraction using Deep Unsupervised Learning
+- Base Forecasters
+    - Statistical forecasting models : ARIMA, ETS, Theta, Prophet, ...
+    - Machine Learning models : Random Forest, XGBoost, ...
+    - Deep Learning models: LSTM, GRU, ...
+- Meta Learning Pipeline
+- Feature Importance Analysis using SHAP
