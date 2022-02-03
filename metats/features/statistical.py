@@ -1,5 +1,8 @@
-from metats.features import FeatureGenerator
+import numpy as np
+import pandas as pd
 import tsfresh
+from metats.features import FeatureGenerator
+
 
 class TsFresh(FeatureGenerator):
     """
