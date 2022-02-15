@@ -17,3 +17,7 @@ class FeatureGenerator():
             timeseries: the timeseries (numpy array) (num_series x series_length)
         """
         raise NotImplementedError('FeatureGenerator.transform() not implemented')
+
+    def fit_transform(self, timeseries):
+        self.fit(timeseries)
+        return self.transform(timeseries)
