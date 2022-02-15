@@ -1,3 +1,4 @@
+import numpy as np
 from metats.forecasters import BaseForecaster
 
 # Naive Forecaster
@@ -8,12 +9,14 @@ class SeasonalNaiveForecaster(BaseForecaster):
     def __init__(self):
         self.name = 'Seasonal Naive Forecaster'
     
-    def predict(self, timeseries, horizon):
+    def predict(self, y, fh):
         """
         forecasting using the naive method
         inputs:
-            timeseries: the time series to be forecasted numpy array (num_series x series_length x covariates_dim)
-            horizon: the number of steps to forecast
+            y: the time series to be forecasted numpy array (num_series x series_length x covariates_dim)
+            fh: the number of steps to forecast
         """
-        predictions = timeseries[:, -horizon:, :]
+        if y.ndim < 3:
+            z = y[:, :, np.newaxis]
+        predictions = z[:, -fh:, :]
         return predictions
