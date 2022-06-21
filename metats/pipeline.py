@@ -134,7 +134,21 @@ class MetaLearning():
         print(meta_features.shape)
         print(predictions.shape)
         self.meta_learner.fit(X=meta_features, y=labels)
-    
+
+    def predict_generate_weights(self, meta_features):
+        """
+        Predict using the meta-learner
+        inputs:
+            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)
+        """
+        weights = None
+        if self.method == 'selection':
+            weights = self.meta_learner.predict(meta_features)
+        elif self.method == 'averaging':
+            weights = self.meta_learner.predict_proba(meta_features)
+        
+        return weights
+
     def predict(self, Y, fh, forecast_dim=0):
         """
         Predict using the meta-learner
@@ -145,6 +159,6 @@ class MetaLearning():
         """
         meta_features = self.generate_features(Y)
         predictions = self.generate_predictions(Y, fh, forecast_dim=forecast_dim)
-        weights = self.meta_learner.predict(meta_features)
+        weights = self.predict_generate_weights(meta_features)
         return weights, predictions
 
