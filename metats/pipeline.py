@@ -36,6 +36,8 @@ class MetaLearning():
             return np.mean(np.square(y_true - y_pred), axis=2)
         elif self.loss == 'mae':
             return np.mean(np.abs(y_true - y_pred), axis=2)
+        elif callable(self.loss):
+            return self.loss(y_true, y_pred)
         else:
             raise ValueError('Loss function not supported')
 

@@ -16,6 +16,8 @@ class CustomFeature(FeatureGenerator):
     def transform(self, Y):
         return np.random.normal(size=(Y.shape[0], 3))
 
+def custom_loss(y_true, y_pred):
+    return np.mean(np.square(y_true - y_pred), axis=2)
 
 
 def test_basic_pipeline():
@@ -27,7 +29,7 @@ def test_basic_pipeline():
 
     feature1 = CustomFeature()
 
-    pipeline = MetaLearning(method='selection')
+    pipeline = MetaLearning(method='selection', loss=custom_loss)
     pipeline.add_forcecaster(forecaster1)
     pipeline.add_forcecaster(forecaster2)
     assert len(pipeline.base_forecasters) == 2
