@@ -1,5 +1,6 @@
 import numpy as np
-from metats.forecasters.utils import is_sktime_forecaster, generate_sktime_prediction
+from metats.forecasters.utils import is_sktime_forecaster, is_darts_forecaster
+from metats.forecasters.wrappers import DartsForecasterWrapper, SKTimeForecasterWrapper
 
 class MetaLearning():
     """
@@ -19,11 +20,19 @@ class MetaLearning():
         """
         self.feature_generators.append(feature_generator)
     
-    def add_forcecaster(self, forcecaster):
+    def add_forcecaster(self, forecaster):
         """
         Add a base forecaster to the pipeline
         """
-        self.base_forecasters.append(forcecaster)
+        # checking for dart forecasters
+        if is_darts_forecaster(forecaster):
+            wrapped = DartsForecasterWrapper(forecaster)
+            self.base_forecasters.append(wrapped)   
+        elif is_sktime_forecaster(forecaster):
+            wrapped = SKTimeForecasterWrapper(forecaster)
+            self.base_forecasters.append(wrapped) 
+        else:
+            self.base_forecasters.append(forecaster)
     
     def loss_fn(self, y_true, y_pred):
         """
@@ -89,11 +98,12 @@ class MetaLearning():
             fh: forecast horizon
             forecast_dim: the dimension of the variable to be forecasted
         """
+        return forecaster.predict(Y, fh, forecast_dim)
         # check whether the forecaster is a valid forecaster
-        if is_sktime_forecaster(forecaster):
-            return generate_sktime_prediction(forecaster, Y, fh, forecast_dim)
-        else:
-            raise ValueError('Forecaster not supported')
+        # if is_sktime_forecaster(forecaster):
+        #     return generate_sktime_prediction(forecaster, Y, fh, forecast_dim)
+        # else:
+        #     raise ValueError('Forecaster not supported')
     
     def generate_predictions(self, Y, fh, forecast_dim=0):
         # generate predictions
@@ -128,11 +138,6 @@ class MetaLearning():
         predictions = self.generate_predictions(Y[:, :-fh, :], fh, forecast_dim=forecast_dim)
         labels = self.generate_labels(Y_true, predictions)
       
-        print(labels)
-        print(meta_features)
-        print(labels.shape)
-        print(meta_features.shape)
-        print(predictions.shape)
         self.meta_learner.fit(X=meta_features, y=labels)
 
     def predict_generate_weights(self, meta_features):
