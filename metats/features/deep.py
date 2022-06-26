@@ -92,3 +92,52 @@ class LSTMDecoder(nn.Module):
     Y = Y.permute(1, 0, 2)
     return Y
 
+
+class AutoEncoder(nn.Module):
+  """
+  General AutoEncoder class
+  """
+  def __init__(self, encoder, decoder):
+    """
+    Args:
+      encoder: a PyTorch module
+      decoder: a PyTorch module
+    """
+    super().__init__()
+
+    self.latent_size = encoder.latent_size
+
+    self.encoder = encoder
+    self.decoder = decoder
+
+    self.rec_loss = nn.MSELoss()
+
+  def encode(self, Y, inference=False):
+    """
+    encodes a mini batch of time series
+    Args:
+      Y : time series batch a PyTorch Tensor (batch_size x seires_length x series_dim)
+      inference : if True, only forward pass will happen and the gradient won't be computed
+    """
+    if inference:
+      self.encoder.eval()
+      with torch.no_grad():
+        return self.encoder(Y)
+    else:
+      return self.encoder(Y)
+
+  def decode(self, latent):
+    """
+    decodes a mini batch of latent vectors
+    Args:
+      latent: a PyTorch Tensor (batch_size x latent_dim)
+    """
+    return self.decoder(latent)
+
+  def loss(self, minibatch):
+    latent = self.encode(minibatch['Y'], inference=False)
+    reconstructed = self.decode(latent)
+    loss = self.rec_loss(minibatch['Y'], reconstructed)
+    return loss
+
+
