@@ -141,3 +141,70 @@ class AutoEncoder(nn.Module):
     return loss
 
 
+class PyTorchTrainer():
+  """
+  Abstract trainer for PyTorch models
+  """
+  def __init__(self, model, batch_size=16, learning_rate=0.02):
+    """
+    Args:
+      model : a PyTorch module
+      batch_size: size of each mini batch
+      learning_rate: optimizer's learning rate
+    """
+    self.model = model
+    self.batch_size = 16
+    self.learning_rate = learning_rate
+    self.loss_callbacks = []
+
+    self.initialize()
+  
+  def initial_optimizer(self):
+    """
+    initializing the optimizer
+    """
+    return torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
+  
+  def initialize(self):
+    self.optimizer = self.initial_optimizer()
+
+  def register_loss_callback(self, fn):
+    """
+    register a callback to which the loss will be passed at each iteration
+    """
+    if callable(fn):
+      self.loss_callbacks.append(fn)
+    else:
+      raise ValueError("The input is not a valid callable object")
+
+  def apply_loss_callbacks(self, loss):
+    """
+    calling all registered callbacks
+    """
+    for fn in self.loss_callbacks:
+      fn(loss)
+  
+  def get_mini_batch(self):
+    """
+    a method which must be implemented to provide a mini batch for model
+    it's better to use a dictionary as mini batch
+    """
+    raise NotImplementedError("You must provide a method for sampling a batch")
+  
+
+  def step(self):
+    """
+    A single training step
+    """
+    # train mode
+    self.model.train()
+    # set thte accumulated gradient to zero 
+    self.optimizer.zero_grad()
+    # computing the loss for a mini batch
+    mini_batch = self.get_mini_batch()
+    loss = self.model.loss(mini_batch)
+    # backprop and a single optimization step
+    loss.backward()
+    self.optimizer.step()
+    # calling the registeres loss callbacks
+    self.apply_loss_callbacks(loss.item())
