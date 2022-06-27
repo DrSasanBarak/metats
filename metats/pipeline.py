@@ -37,7 +37,7 @@ class MetaLearning():
     def loss_fn(self, y_true, y_pred):
         """
         Loss function for the meta-learner
-        inputs:
+        Args:
             y_true: true values (numpy array) (num_series x horizon)
             Y_pred: the matrix of predictions (num_series x num_models x horizon)
         """
@@ -53,7 +53,7 @@ class MetaLearning():
     def labels_selection(self, y_true, Y_pred, return_one_hot=False):
         """
         Generate labels for the meta-learner using selection
-        inputs:
+        Args:
             y_true: true values (numpy array) (num_series x horizon)
             Y_pred: the matrix of predictions (num_series x num_models x horizon)
         """
@@ -71,7 +71,7 @@ class MetaLearning():
     def generate_labels(self, y_true, Y_pred):
         """
         Generate labels for the meta-learner
-        inputs:
+        Args:
             y_true: true values
             Y_pred: the matrix of predictions 
         """
@@ -92,18 +92,13 @@ class MetaLearning():
     def generate_prediction(self, forecaster, Y, fh, forecast_dim):
         """
         Generate predictions for a single forecaster
-        inputs:
+        Args:
             forecaster: the forecaster to be used
             Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
             fh: forecast horizon
             forecast_dim: the dimension of the variable to be forecasted
         """
         return forecaster.predict(Y, fh, forecast_dim)
-        # check whether the forecaster is a valid forecaster
-        # if is_sktime_forecaster(forecaster):
-        #     return generate_sktime_prediction(forecaster, Y, fh, forecast_dim)
-        # else:
-        #     raise ValueError('Forecaster not supported')
     
     def generate_predictions(self, Y, fh, forecast_dim=0):
         # generate predictions
@@ -120,7 +115,7 @@ class MetaLearning():
     def add_metalearner(self, metalearner):
         """
         Add a meta-learner to the pipeline
-        inputs:
+        Args:
             metalearner: the meta-learner to be added a scikit-learn estimator
         """
         self.meta_learner = metalearner
@@ -128,12 +123,13 @@ class MetaLearning():
     def fit(self, Y, fh, forecast_dim=0):
         """
         Fit the meta-learner
-        inputs:
+        Args:
             Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
         """
         # data spliting for meta-learning
         Y_true = Y[:, -fh:, forecast_dim]
 
+        self.features_fh = fh
         meta_features = self.generate_features(Y[:, :-fh, :])
         predictions = self.generate_predictions(Y[:, :-fh, :], fh, forecast_dim=forecast_dim)
         labels = self.generate_labels(Y_true, predictions)
@@ -143,7 +139,7 @@ class MetaLearning():
     def predict_generate_weights(self, meta_features):
         """
         Predict using the meta-learner
-        inputs:
+        Args:
             metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)
         """
         weights = None
@@ -154,15 +150,15 @@ class MetaLearning():
         
         return weights
 
-    def predict(self, Y, fh, forecast_dim=0):
+    def predict(self, Y, fh, forecast_dim=0, return_weights=False):
         """
         Predict using the meta-learner
-        inputs:
+        Args:
             Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
             fh: forecast horizon for predicting
             forecast_dim: the dimension of the variable to be forecasted
         """
-        meta_features = self.generate_features(Y)
+        meta_features = self.generate_features(Y[:, :-self.features_fh, :])
         predictions = self.generate_predictions(Y, fh, forecast_dim=forecast_dim)
         weights = self.predict_generate_weights(meta_features)
         return weights, predictions
