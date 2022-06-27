@@ -134,7 +134,7 @@ class MetaLearning():
         meta_features = self.generate_features(Y[:, :-fh, :])
         predictions = self.generate_predictions(Y[:, :-fh, :], fh, forecast_dim=forecast_dim)
         labels = self.generate_labels(Y_true, predictions)
-        print('meta labels : ', labels)
+
         self.meta_learner.fit(X=meta_features, y=labels)
 
     def predict_generate_weights(self, meta_features):
@@ -151,6 +151,28 @@ class MetaLearning():
         
         return weights
 
+    def averaging_predictions(self, weights, predictions):
+        """
+        Generating the predictions by averaging each base-forecaster
+        """
+        weighted_predictions = []
+        for series in range(predictions.shape[0]):
+            p = weights[series, :].reshape(1, -1) @ predictions[series, :, :]
+            weighted_predictions.append(p)
+        result = np.vstack(weighted_predictions)
+        return result
+    
+    def selection_predictions(self, weights, predictions):
+        """
+        Generating the predictions by selecting the best-forecaster
+        """
+        selected_predictions = []
+        for series in range(predictions.shape[0]):
+            p = predictions[series, weights[series], :].reshape(1,-1)
+            selected_predictions.append(p)
+        result = np.vstack(selected_predictions)
+        return result
+
     def predict(self, Y, fh, forecast_dim=0, return_weights=False):
         """
         Predict using the meta-learner
@@ -162,5 +184,11 @@ class MetaLearning():
         meta_features = self.generate_features(Y[:, :-self.features_fh, :])
         predictions = self.generate_predictions(Y, fh, forecast_dim=forecast_dim)
         weights = self.predict_generate_weights(meta_features)
-        return weights, predictions
+        
+        if self.method == 'averaging':
+            result = self.averaging_predictions(weights, predictions)
+        else:
+            result = self.selection_predictions(weights, predictions)
+        
+        return result
 
