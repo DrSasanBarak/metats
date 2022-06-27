@@ -21,13 +21,21 @@ class DeepAutoEncoder(FeatureGenerator):
     """
     A wrapper class for feature extraction using deep auto encoders
     """
-    def __init__(self, auto_encoder, epochs=64, *args, **kwargs):
+    def __init__(self, auto_encoder, verbose=False, epochs=64, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.auto_encoder = auto_encoder
         self.epochs = epochs
+        self.verbose = verbose
+    
+    def print_loss_callback(self, loss):
+        print('Deep AE Reconstruction Loss: {:.3f}'.format(loss))
+
 
     def fit(self, Y):
         trainer = DeepAETrainer(model=self.auto_encoder)
+        if self.verbose:
+            trainer.register_loss_callback(self.print_loss_callback)
+
         trainer.Y = Y
         for epoch in range(self.epochs):
             trainer.step()
