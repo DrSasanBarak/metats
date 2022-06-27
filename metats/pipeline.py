@@ -57,7 +57,8 @@ class MetaLearning():
             y_true: true values (numpy array) (num_series x horizon)
             Y_pred: the matrix of predictions (num_series x num_models x horizon)
         """
-        error = self.loss_fn(y_true, Y_pred)
+        error = self.loss_fn(y_true, np.transpose(Y_pred, (1, 0, 2)))
+        error = error.T
         label_indices = np.argmin(error, axis=1)
         if return_one_hot:    
             # convert to one-hot encoding
@@ -133,7 +134,7 @@ class MetaLearning():
         meta_features = self.generate_features(Y[:, :-fh, :])
         predictions = self.generate_predictions(Y[:, :-fh, :], fh, forecast_dim=forecast_dim)
         labels = self.generate_labels(Y_true, predictions)
-      
+        print('meta labels : ', labels)
         self.meta_learner.fit(X=meta_features, y=labels)
 
     def predict_generate_weights(self, meta_features):
