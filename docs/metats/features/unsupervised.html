@@ -31,16 +31,28 @@
         <h2>API Documentation</h2>
             <ul class="memberlist">
             <li>
-                    <a class="class" href="#AutoEncoder">AutoEncoder</a>
+                    <a class="class" href="#DeepAETrainer">DeepAETrainer</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#AutoEncoder.__init__">AutoEncoder</a>
+                                <a class="function" href="#DeepAETrainer.__init__">DeepAETrainer</a>
                         </li>
                         <li>
-                                <a class="function" href="#AutoEncoder.fit">fit</a>
+                                <a class="function" href="#DeepAETrainer.get_mini_batch">get_mini_batch</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#DeepAutoEncoder">DeepAutoEncoder</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#DeepAutoEncoder.__init__">DeepAutoEncoder</a>
                         </li>
                         <li>
-                                <a class="function" href="#AutoEncoder.transform">transform</a>
+                                <a class="function" href="#DeepAutoEncoder.fit">fit</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#DeepAutoEncoder.transform">transform</a>
                         </li>
                 </ul>
 
@@ -82,83 +94,223 @@
                         <label class="view-source-button" for="unsupervised-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">from</span> <span class="nn">metats.features</span> <span class="kn">import</span> <span class="n">FeatureGenerator</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="k">class</span> <span class="nc">AutoEncoder</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="sd">    Base Class for Endeor-Decoder feature extractors</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>        <span class="k">pass</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>        <span class="k">pass</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="k">class</span> <span class="nc">Contrastive</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    Base Class for Contrastive feature extractors</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="k">pass</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="k">pass</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">import</span> <span class="nn">torch</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="kn">from</span> <span class="nn">metats.features</span> <span class="kn">import</span> <span class="n">FeatureGenerator</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">metats.features.deep</span> <span class="kn">import</span> <span class="n">PyTorchTrainer</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="k">class</span> <span class="nc">DeepAETrainer</span><span class="p">(</span><span class="n">PyTorchTrainer</span><span class="p">):</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>    <span class="k">def</span> <span class="nf">get_mini_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>        <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>        <span class="n">sample_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">data_size</span><span class="p">)</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">sample_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>        <span class="n">mini_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>        <span class="n">mini_batch_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span> <span class="p">:</span> <span class="n">mini_batch_tensor</span><span class="p">}</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="k">class</span> <span class="nc">DeepAutoEncoder</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">    A wrapper class for feature extraction using deep auto encoders</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_encoder</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span> <span class="o">=</span> <span class="n">auto_encoder</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>        <span class="n">trainer</span> <span class="o">=</span> <span class="n">DeepAETrainer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="p">)</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>        <span class="n">trainer</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>            <span class="n">trainer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>    
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="n">Y_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="n">latent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Y_tensor</span><span class="p">,</span> <span class="n">inference</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>        <span class="k">return</span> <span class="n">latent</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="k">class</span> <span class="nc">Contrastive</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">    Base Class for Contrastive feature extractors</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="k">pass</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>        <span class="k">pass</span>
 </span></pre></div>
 
 
             </section>
-                <section id="AutoEncoder">
-                            <input id="AutoEncoder-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                <section id="DeepAETrainer">
+                            <input id="DeepAETrainer-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">AutoEncoder</span><wbr>(<span class="base"><a href="../features.html#FeatureGenerator">metats.features.FeatureGenerator</a></span>):
+    <span class="name">DeepAETrainer</span><wbr>(<span class="base"><a href="deep.html#PyTorchTrainer">metats.features.deep.PyTorchTrainer</a></span>):
 
-                <label class="view-source-button" for="AutoEncoder-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="DeepAETrainer-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#AutoEncoder"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AutoEncoder-5"><a href="#AutoEncoder-5"><span class="linenos"> 5</span></a><span class="k">class</span> <span class="nc">AutoEncoder</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
-</span><span id="AutoEncoder-6"><a href="#AutoEncoder-6"><span class="linenos"> 6</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="AutoEncoder-7"><a href="#AutoEncoder-7"><span class="linenos"> 7</span></a><span class="sd">    Base Class for Endeor-Decoder feature extractors</span>
-</span><span id="AutoEncoder-8"><a href="#AutoEncoder-8"><span class="linenos"> 8</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="AutoEncoder-9"><a href="#AutoEncoder-9"><span class="linenos"> 9</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="AutoEncoder-10"><a href="#AutoEncoder-10"><span class="linenos">10</span></a>        <span class="k">pass</span>
-</span><span id="AutoEncoder-11"><a href="#AutoEncoder-11"><span class="linenos">11</span></a>    
-</span><span id="AutoEncoder-12"><a href="#AutoEncoder-12"><span class="linenos">12</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="AutoEncoder-13"><a href="#AutoEncoder-13"><span class="linenos">13</span></a>        <span class="k">pass</span>
+    <a class="headerlink" href="#DeepAETrainer"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAETrainer-9"><a href="#DeepAETrainer-9"><span class="linenos"> 9</span></a><span class="k">class</span> <span class="nc">DeepAETrainer</span><span class="p">(</span><span class="n">PyTorchTrainer</span><span class="p">):</span>
+</span><span id="DeepAETrainer-10"><a href="#DeepAETrainer-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="DeepAETrainer-11"><a href="#DeepAETrainer-11"><span class="linenos">11</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="DeepAETrainer-12"><a href="#DeepAETrainer-12"><span class="linenos">12</span></a>
+</span><span id="DeepAETrainer-13"><a href="#DeepAETrainer-13"><span class="linenos">13</span></a>    <span class="k">def</span> <span class="nf">get_mini_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="DeepAETrainer-14"><a href="#DeepAETrainer-14"><span class="linenos">14</span></a>        <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="DeepAETrainer-15"><a href="#DeepAETrainer-15"><span class="linenos">15</span></a>        <span class="n">sample_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">data_size</span><span class="p">)</span>
+</span><span id="DeepAETrainer-16"><a href="#DeepAETrainer-16"><span class="linenos">16</span></a>        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">sample_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="DeepAETrainer-17"><a href="#DeepAETrainer-17"><span class="linenos">17</span></a>        <span class="n">mini_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+</span><span id="DeepAETrainer-18"><a href="#DeepAETrainer-18"><span class="linenos">18</span></a>        <span class="n">mini_batch_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="DeepAETrainer-19"><a href="#DeepAETrainer-19"><span class="linenos">19</span></a>        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span> <span class="p">:</span> <span class="n">mini_batch_tensor</span><span class="p">}</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Base Class for Endeor-Decoder feature extractors</p>
+            <div class="docstring"><p>Abstract trainer for PyTorch models</p>
 </div>
 
 
-                            <div id="AutoEncoder.__init__" class="classattr">
-                                <div class="attr function">
+                            <div id="DeepAETrainer.__init__" class="classattr">
+                                        <input id="DeepAETrainer.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
             
-        <span class="name">AutoEncoder</span><span class="signature pdoc-code condensed">()</span>
+        <span class="name">DeepAETrainer</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
-        
+                <label class="view-source-button" for="DeepAETrainer.__init__-view-source"><span>View Source</span></label>
+
     </div>
-    <a class="headerlink" href="#AutoEncoder.__init__"></a>
-    
+    <a class="headerlink" href="#DeepAETrainer.__init__"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAETrainer.__init__-10"><a href="#DeepAETrainer.__init__-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="DeepAETrainer.__init__-11"><a href="#DeepAETrainer.__init__-11"><span class="linenos">11</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Args:
+  model : a PyTorch module
+  batch_size: size of each mini batch
+  learning_rate: optimizer's learning rate</p>
+</div>
+
+
+                            </div>
+                            <div id="DeepAETrainer.get_mini_batch" class="classattr">
+                                        <input id="DeepAETrainer.get_mini_batch-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get_mini_batch</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="DeepAETrainer.get_mini_batch-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#DeepAETrainer.get_mini_batch"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAETrainer.get_mini_batch-13"><a href="#DeepAETrainer.get_mini_batch-13"><span class="linenos">13</span></a>    <span class="k">def</span> <span class="nf">get_mini_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="DeepAETrainer.get_mini_batch-14"><a href="#DeepAETrainer.get_mini_batch-14"><span class="linenos">14</span></a>        <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="DeepAETrainer.get_mini_batch-15"><a href="#DeepAETrainer.get_mini_batch-15"><span class="linenos">15</span></a>        <span class="n">sample_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">data_size</span><span class="p">)</span>
+</span><span id="DeepAETrainer.get_mini_batch-16"><a href="#DeepAETrainer.get_mini_batch-16"><span class="linenos">16</span></a>        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">sample_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="DeepAETrainer.get_mini_batch-17"><a href="#DeepAETrainer.get_mini_batch-17"><span class="linenos">17</span></a>        <span class="n">mini_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+</span><span id="DeepAETrainer.get_mini_batch-18"><a href="#DeepAETrainer.get_mini_batch-18"><span class="linenos">18</span></a>        <span class="n">mini_batch_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="DeepAETrainer.get_mini_batch-19"><a href="#DeepAETrainer.get_mini_batch-19"><span class="linenos">19</span></a>        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span> <span class="p">:</span> <span class="n">mini_batch_tensor</span><span class="p">}</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>a method which must be implemented to provide a mini batch for model
+it's better to use a dictionary as mini batch</p>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="deep.html#PyTorchTrainer">metats.features.deep.PyTorchTrainer</a></dt>
+                                <dd id="DeepAETrainer.initial_optimizer" class="function"><a href="deep.html#PyTorchTrainer.initial_optimizer">initial_optimizer</a></dd>
+                <dd id="DeepAETrainer.initialize" class="function"><a href="deep.html#PyTorchTrainer.initialize">initialize</a></dd>
+                <dd id="DeepAETrainer.register_loss_callback" class="function"><a href="deep.html#PyTorchTrainer.register_loss_callback">register_loss_callback</a></dd>
+                <dd id="DeepAETrainer.apply_loss_callbacks" class="function"><a href="deep.html#PyTorchTrainer.apply_loss_callbacks">apply_loss_callbacks</a></dd>
+                <dd id="DeepAETrainer.step" class="function"><a href="deep.html#PyTorchTrainer.step">step</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="DeepAutoEncoder">
+                            <input id="DeepAutoEncoder-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">DeepAutoEncoder</span><wbr>(<span class="base"><a href="../features.html#FeatureGenerator">metats.features.FeatureGenerator</a></span>):
+
+                <label class="view-source-button" for="DeepAutoEncoder-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#DeepAutoEncoder"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAutoEncoder-21"><a href="#DeepAutoEncoder-21"><span class="linenos">21</span></a><span class="k">class</span> <span class="nc">DeepAutoEncoder</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder-22"><a href="#DeepAutoEncoder-22"><span class="linenos">22</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DeepAutoEncoder-23"><a href="#DeepAutoEncoder-23"><span class="linenos">23</span></a><span class="sd">    A wrapper class for feature extraction using deep auto encoders</span>
+</span><span id="DeepAutoEncoder-24"><a href="#DeepAutoEncoder-24"><span class="linenos">24</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="DeepAutoEncoder-25"><a href="#DeepAutoEncoder-25"><span class="linenos">25</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_encoder</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder-26"><a href="#DeepAutoEncoder-26"><span class="linenos">26</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder-27"><a href="#DeepAutoEncoder-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span> <span class="o">=</span> <span class="n">auto_encoder</span>
+</span><span id="DeepAutoEncoder-28"><a href="#DeepAutoEncoder-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+</span><span id="DeepAutoEncoder-29"><a href="#DeepAutoEncoder-29"><span class="linenos">29</span></a>
+</span><span id="DeepAutoEncoder-30"><a href="#DeepAutoEncoder-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder-31"><a href="#DeepAutoEncoder-31"><span class="linenos">31</span></a>        <span class="n">trainer</span> <span class="o">=</span> <span class="n">DeepAETrainer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder-32"><a href="#DeepAutoEncoder-32"><span class="linenos">32</span></a>        <span class="n">trainer</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="DeepAutoEncoder-33"><a href="#DeepAutoEncoder-33"><span class="linenos">33</span></a>        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder-34"><a href="#DeepAutoEncoder-34"><span class="linenos">34</span></a>            <span class="n">trainer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</span><span id="DeepAutoEncoder-35"><a href="#DeepAutoEncoder-35"><span class="linenos">35</span></a>    
+</span><span id="DeepAutoEncoder-36"><a href="#DeepAutoEncoder-36"><span class="linenos">36</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder-37"><a href="#DeepAutoEncoder-37"><span class="linenos">37</span></a>        <span class="n">Y_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="DeepAutoEncoder-38"><a href="#DeepAutoEncoder-38"><span class="linenos">38</span></a>        <span class="n">latent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Y_tensor</span><span class="p">,</span> <span class="n">inference</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder-39"><a href="#DeepAutoEncoder-39"><span class="linenos">39</span></a>        <span class="k">return</span> <span class="n">latent</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>A wrapper class for feature extraction using deep auto encoders</p>
+</div>
+
+
+                            <div id="DeepAutoEncoder.__init__" class="classattr">
+                                        <input id="DeepAutoEncoder.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="name">DeepAutoEncoder</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">auto_encoder</span>, </span><span class="param"><span class="n">epochs</span><span class="o">=</span><span class="mi">64</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
+
+                <label class="view-source-button" for="DeepAutoEncoder.__init__-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#DeepAutoEncoder.__init__"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAutoEncoder.__init__-25"><a href="#DeepAutoEncoder.__init__-25"><span class="linenos">25</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_encoder</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder.__init__-26"><a href="#DeepAutoEncoder.__init__-26"><span class="linenos">26</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder.__init__-27"><a href="#DeepAutoEncoder.__init__-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span> <span class="o">=</span> <span class="n">auto_encoder</span>
+</span><span id="DeepAutoEncoder.__init__-28"><a href="#DeepAutoEncoder.__init__-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+</span></pre></div>
+
+
     
 
                             </div>
-                            <div id="AutoEncoder.fit" class="classattr">
-                                        <input id="AutoEncoder.fit-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                            <div id="DeepAutoEncoder.fit" class="classattr">
+                                        <input id="DeepAutoEncoder.fit-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">fit</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">Y</span></span>)</span>
 
-                <label class="view-source-button" for="AutoEncoder.fit-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="DeepAutoEncoder.fit-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#AutoEncoder.fit"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AutoEncoder.fit-9"><a href="#AutoEncoder.fit-9"><span class="linenos"> 9</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="AutoEncoder.fit-10"><a href="#AutoEncoder.fit-10"><span class="linenos">10</span></a>        <span class="k">pass</span>
+    <a class="headerlink" href="#DeepAutoEncoder.fit"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAutoEncoder.fit-30"><a href="#DeepAutoEncoder.fit-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder.fit-31"><a href="#DeepAutoEncoder.fit-31"><span class="linenos">31</span></a>        <span class="n">trainer</span> <span class="o">=</span> <span class="n">DeepAETrainer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder.fit-32"><a href="#DeepAutoEncoder.fit-32"><span class="linenos">32</span></a>        <span class="n">trainer</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="DeepAutoEncoder.fit-33"><a href="#DeepAutoEncoder.fit-33"><span class="linenos">33</span></a>        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder.fit-34"><a href="#DeepAutoEncoder.fit-34"><span class="linenos">34</span></a>            <span class="n">trainer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -169,19 +321,21 @@ inputs:
 
 
                             </div>
-                            <div id="AutoEncoder.transform" class="classattr">
-                                        <input id="AutoEncoder.transform-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                            <div id="DeepAutoEncoder.transform" class="classattr">
+                                        <input id="DeepAutoEncoder.transform-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">transform</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">Y</span></span>)</span>
 
-                <label class="view-source-button" for="AutoEncoder.transform-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="DeepAutoEncoder.transform-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#AutoEncoder.transform"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AutoEncoder.transform-12"><a href="#AutoEncoder.transform-12"><span class="linenos">12</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="AutoEncoder.transform-13"><a href="#AutoEncoder.transform-13"><span class="linenos">13</span></a>        <span class="k">pass</span>
+    <a class="headerlink" href="#DeepAutoEncoder.transform"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DeepAutoEncoder.transform-36"><a href="#DeepAutoEncoder.transform-36"><span class="linenos">36</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="DeepAutoEncoder.transform-37"><a href="#DeepAutoEncoder.transform-37"><span class="linenos">37</span></a>        <span class="n">Y_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="DeepAutoEncoder.transform-38"><a href="#DeepAutoEncoder.transform-38"><span class="linenos">38</span></a>        <span class="n">latent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Y_tensor</span><span class="p">,</span> <span class="n">inference</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="DeepAutoEncoder.transform-39"><a href="#DeepAutoEncoder.transform-39"><span class="linenos">39</span></a>        <span class="k">return</span> <span class="n">latent</span>
 </span></pre></div>
 
 
@@ -196,7 +350,7 @@ inputs:
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../features.html#FeatureGenerator">metats.features.FeatureGenerator</a></dt>
-                                <dd id="AutoEncoder.fit_transform" class="function"><a href="../features.html#FeatureGenerator.fit_transform">fit_transform</a></dd>
+                                <dd id="DeepAutoEncoder.fit_transform" class="function"><a href="../features.html#FeatureGenerator.fit_transform">fit_transform</a></dd>
 
             </div>
                                 </dl>
@@ -213,15 +367,15 @@ inputs:
 
     </div>
     <a class="headerlink" href="#Contrastive"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive-15"><a href="#Contrastive-15"><span class="linenos">15</span></a><span class="k">class</span> <span class="nc">Contrastive</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
-</span><span id="Contrastive-16"><a href="#Contrastive-16"><span class="linenos">16</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Contrastive-17"><a href="#Contrastive-17"><span class="linenos">17</span></a><span class="sd">    Base Class for Contrastive feature extractors</span>
-</span><span id="Contrastive-18"><a href="#Contrastive-18"><span class="linenos">18</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="Contrastive-19"><a href="#Contrastive-19"><span class="linenos">19</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="Contrastive-20"><a href="#Contrastive-20"><span class="linenos">20</span></a>        <span class="k">pass</span>
-</span><span id="Contrastive-21"><a href="#Contrastive-21"><span class="linenos">21</span></a>    
-</span><span id="Contrastive-22"><a href="#Contrastive-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="Contrastive-23"><a href="#Contrastive-23"><span class="linenos">23</span></a>        <span class="k">pass</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive-41"><a href="#Contrastive-41"><span class="linenos">41</span></a><span class="k">class</span> <span class="nc">Contrastive</span><span class="p">(</span><span class="n">FeatureGenerator</span><span class="p">):</span>
+</span><span id="Contrastive-42"><a href="#Contrastive-42"><span class="linenos">42</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Contrastive-43"><a href="#Contrastive-43"><span class="linenos">43</span></a><span class="sd">    Base Class for Contrastive feature extractors</span>
+</span><span id="Contrastive-44"><a href="#Contrastive-44"><span class="linenos">44</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="Contrastive-45"><a href="#Contrastive-45"><span class="linenos">45</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="Contrastive-46"><a href="#Contrastive-46"><span class="linenos">46</span></a>        <span class="k">pass</span>
+</span><span id="Contrastive-47"><a href="#Contrastive-47"><span class="linenos">47</span></a>    
+</span><span id="Contrastive-48"><a href="#Contrastive-48"><span class="linenos">48</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="Contrastive-49"><a href="#Contrastive-49"><span class="linenos">49</span></a>        <span class="k">pass</span>
 </span></pre></div>
 
 
@@ -252,8 +406,8 @@ inputs:
 
     </div>
     <a class="headerlink" href="#Contrastive.fit"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive.fit-19"><a href="#Contrastive.fit-19"><span class="linenos">19</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="Contrastive.fit-20"><a href="#Contrastive.fit-20"><span class="linenos">20</span></a>        <span class="k">pass</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive.fit-45"><a href="#Contrastive.fit-45"><span class="linenos">45</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="Contrastive.fit-46"><a href="#Contrastive.fit-46"><span class="linenos">46</span></a>        <span class="k">pass</span>
 </span></pre></div>
 
 
@@ -275,8 +429,8 @@ inputs:
 
     </div>
     <a class="headerlink" href="#Contrastive.transform"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive.transform-22"><a href="#Contrastive.transform-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-</span><span id="Contrastive.transform-23"><a href="#Contrastive.transform-23"><span class="linenos">23</span></a>        <span class="k">pass</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Contrastive.transform-48"><a href="#Contrastive.transform-48"><span class="linenos">48</span></a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+</span><span id="Contrastive.transform-49"><a href="#Contrastive.transform-49"><span class="linenos">49</span></a>        <span class="k">pass</span>
 </span></pre></div>
 
 

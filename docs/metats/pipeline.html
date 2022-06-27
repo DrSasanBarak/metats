@@ -135,7 +135,7 @@
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Loss function for the meta-learner</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        inputs:</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        Args:</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -151,7 +151,7 @@
 </span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="k">def</span> <span class="nf">labels_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">,</span> <span class="n">return_one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        Generate labels for the meta-learner using selection</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        inputs:</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        Args:</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -169,7 +169,7 @@
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">):</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">        Generate labels for the meta-learner</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        inputs:</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        Args:</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">            y_true: true values</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">            Y_pred: the matrix of predictions </span>
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -190,7 +190,7 @@
 </span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="k">def</span> <span class="nf">generate_prediction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forecaster</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="p">):</span>
 </span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        Generate predictions for a single forecaster</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        inputs:</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        Args:</span>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            forecaster: the forecaster to be used</span>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">            fh: forecast horizon</span>
@@ -213,7 +213,7 @@
 </span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>    <span class="k">def</span> <span class="nf">add_metalearner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metalearner</span><span class="p">):</span>
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        Add a meta-learner to the pipeline</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        inputs:</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        Args:</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">            metalearner: the meta-learner to be added a scikit-learn estimator</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span> <span class="o">=</span> <span class="n">metalearner</span>
@@ -221,44 +221,45 @@
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">        Fit the meta-learner</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">        inputs:</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">        Args:</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="c1"># data spliting for meta-learning</span>
 </span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="n">Y_true</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="o">-</span><span class="n">fh</span><span class="p">:,</span> <span class="n">forecast_dim</span><span class="p">]</span>
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>      
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        inputs:</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="k">return</span> <span class="n">weights</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        inputs:</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">            fh: forecast horizon for predicting</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span> <span class="o">=</span> <span class="n">fh</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>      
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        Args:</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">weights</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        Args:</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">            fh: forecast horizon for predicting</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
 </span></pre></div>
 
 
@@ -309,7 +310,7 @@
 </span><span id="MetaLearning-38"><a href="#MetaLearning-38"><span class="linenos"> 38</span></a>    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
 </span><span id="MetaLearning-39"><a href="#MetaLearning-39"><span class="linenos"> 39</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-40"><a href="#MetaLearning-40"><span class="linenos"> 40</span></a><span class="sd">        Loss function for the meta-learner</span>
-</span><span id="MetaLearning-41"><a href="#MetaLearning-41"><span class="linenos"> 41</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-41"><a href="#MetaLearning-41"><span class="linenos"> 41</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-42"><a href="#MetaLearning-42"><span class="linenos"> 42</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="MetaLearning-43"><a href="#MetaLearning-43"><span class="linenos"> 43</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="MetaLearning-44"><a href="#MetaLearning-44"><span class="linenos"> 44</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -325,7 +326,7 @@
 </span><span id="MetaLearning-54"><a href="#MetaLearning-54"><span class="linenos"> 54</span></a>    <span class="k">def</span> <span class="nf">labels_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">,</span> <span class="n">return_one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="MetaLearning-55"><a href="#MetaLearning-55"><span class="linenos"> 55</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-56"><a href="#MetaLearning-56"><span class="linenos"> 56</span></a><span class="sd">        Generate labels for the meta-learner using selection</span>
-</span><span id="MetaLearning-57"><a href="#MetaLearning-57"><span class="linenos"> 57</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-57"><a href="#MetaLearning-57"><span class="linenos"> 57</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-58"><a href="#MetaLearning-58"><span class="linenos"> 58</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="MetaLearning-59"><a href="#MetaLearning-59"><span class="linenos"> 59</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="MetaLearning-60"><a href="#MetaLearning-60"><span class="linenos"> 60</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -343,7 +344,7 @@
 </span><span id="MetaLearning-72"><a href="#MetaLearning-72"><span class="linenos"> 72</span></a>    <span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">):</span>
 </span><span id="MetaLearning-73"><a href="#MetaLearning-73"><span class="linenos"> 73</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-74"><a href="#MetaLearning-74"><span class="linenos"> 74</span></a><span class="sd">        Generate labels for the meta-learner</span>
-</span><span id="MetaLearning-75"><a href="#MetaLearning-75"><span class="linenos"> 75</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-75"><a href="#MetaLearning-75"><span class="linenos"> 75</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-76"><a href="#MetaLearning-76"><span class="linenos"> 76</span></a><span class="sd">            y_true: true values</span>
 </span><span id="MetaLearning-77"><a href="#MetaLearning-77"><span class="linenos"> 77</span></a><span class="sd">            Y_pred: the matrix of predictions </span>
 </span><span id="MetaLearning-78"><a href="#MetaLearning-78"><span class="linenos"> 78</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -364,7 +365,7 @@
 </span><span id="MetaLearning-93"><a href="#MetaLearning-93"><span class="linenos"> 93</span></a>    <span class="k">def</span> <span class="nf">generate_prediction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forecaster</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="p">):</span>
 </span><span id="MetaLearning-94"><a href="#MetaLearning-94"><span class="linenos"> 94</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-95"><a href="#MetaLearning-95"><span class="linenos"> 95</span></a><span class="sd">        Generate predictions for a single forecaster</span>
-</span><span id="MetaLearning-96"><a href="#MetaLearning-96"><span class="linenos"> 96</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-96"><a href="#MetaLearning-96"><span class="linenos"> 96</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-97"><a href="#MetaLearning-97"><span class="linenos"> 97</span></a><span class="sd">            forecaster: the forecaster to be used</span>
 </span><span id="MetaLearning-98"><a href="#MetaLearning-98"><span class="linenos"> 98</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="MetaLearning-99"><a href="#MetaLearning-99"><span class="linenos"> 99</span></a><span class="sd">            fh: forecast horizon</span>
@@ -387,7 +388,7 @@
 </span><span id="MetaLearning-116"><a href="#MetaLearning-116"><span class="linenos">116</span></a>    <span class="k">def</span> <span class="nf">add_metalearner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metalearner</span><span class="p">):</span>
 </span><span id="MetaLearning-117"><a href="#MetaLearning-117"><span class="linenos">117</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-118"><a href="#MetaLearning-118"><span class="linenos">118</span></a><span class="sd">        Add a meta-learner to the pipeline</span>
-</span><span id="MetaLearning-119"><a href="#MetaLearning-119"><span class="linenos">119</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-119"><a href="#MetaLearning-119"><span class="linenos">119</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-120"><a href="#MetaLearning-120"><span class="linenos">120</span></a><span class="sd">            metalearner: the meta-learner to be added a scikit-learn estimator</span>
 </span><span id="MetaLearning-121"><a href="#MetaLearning-121"><span class="linenos">121</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="MetaLearning-122"><a href="#MetaLearning-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span> <span class="o">=</span> <span class="n">metalearner</span>
@@ -395,44 +396,45 @@
 </span><span id="MetaLearning-124"><a href="#MetaLearning-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 </span><span id="MetaLearning-125"><a href="#MetaLearning-125"><span class="linenos">125</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning-126"><a href="#MetaLearning-126"><span class="linenos">126</span></a><span class="sd">        Fit the meta-learner</span>
-</span><span id="MetaLearning-127"><a href="#MetaLearning-127"><span class="linenos">127</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning-127"><a href="#MetaLearning-127"><span class="linenos">127</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning-128"><a href="#MetaLearning-128"><span class="linenos">128</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="MetaLearning-129"><a href="#MetaLearning-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="MetaLearning-130"><a href="#MetaLearning-130"><span class="linenos">130</span></a>        <span class="c1"># data spliting for meta-learning</span>
 </span><span id="MetaLearning-131"><a href="#MetaLearning-131"><span class="linenos">131</span></a>        <span class="n">Y_true</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="o">-</span><span class="n">fh</span><span class="p">:,</span> <span class="n">forecast_dim</span><span class="p">]</span>
 </span><span id="MetaLearning-132"><a href="#MetaLearning-132"><span class="linenos">132</span></a>
-</span><span id="MetaLearning-133"><a href="#MetaLearning-133"><span class="linenos">133</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
-</span><span id="MetaLearning-134"><a href="#MetaLearning-134"><span class="linenos">134</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="MetaLearning-135"><a href="#MetaLearning-135"><span class="linenos">135</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
-</span><span id="MetaLearning-136"><a href="#MetaLearning-136"><span class="linenos">136</span></a>      
-</span><span id="MetaLearning-137"><a href="#MetaLearning-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-</span><span id="MetaLearning-138"><a href="#MetaLearning-138"><span class="linenos">138</span></a>
-</span><span id="MetaLearning-139"><a href="#MetaLearning-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
-</span><span id="MetaLearning-140"><a href="#MetaLearning-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="MetaLearning-141"><a href="#MetaLearning-141"><span class="linenos">141</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="MetaLearning-142"><a href="#MetaLearning-142"><span class="linenos">142</span></a><span class="sd">        inputs:</span>
-</span><span id="MetaLearning-143"><a href="#MetaLearning-143"><span class="linenos">143</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
-</span><span id="MetaLearning-144"><a href="#MetaLearning-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="MetaLearning-145"><a href="#MetaLearning-145"><span class="linenos">145</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="MetaLearning-146"><a href="#MetaLearning-146"><span class="linenos">146</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
-</span><span id="MetaLearning-147"><a href="#MetaLearning-147"><span class="linenos">147</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning-148"><a href="#MetaLearning-148"><span class="linenos">148</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
-</span><span id="MetaLearning-149"><a href="#MetaLearning-149"><span class="linenos">149</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning-150"><a href="#MetaLearning-150"><span class="linenos">150</span></a>        
-</span><span id="MetaLearning-151"><a href="#MetaLearning-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">weights</span>
-</span><span id="MetaLearning-152"><a href="#MetaLearning-152"><span class="linenos">152</span></a>
-</span><span id="MetaLearning-153"><a href="#MetaLearning-153"><span class="linenos">153</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-</span><span id="MetaLearning-154"><a href="#MetaLearning-154"><span class="linenos">154</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="MetaLearning-155"><a href="#MetaLearning-155"><span class="linenos">155</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="MetaLearning-156"><a href="#MetaLearning-156"><span class="linenos">156</span></a><span class="sd">        inputs:</span>
-</span><span id="MetaLearning-157"><a href="#MetaLearning-157"><span class="linenos">157</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
-</span><span id="MetaLearning-158"><a href="#MetaLearning-158"><span class="linenos">158</span></a><span class="sd">            fh: forecast horizon for predicting</span>
-</span><span id="MetaLearning-159"><a href="#MetaLearning-159"><span class="linenos">159</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
-</span><span id="MetaLearning-160"><a href="#MetaLearning-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="MetaLearning-161"><a href="#MetaLearning-161"><span class="linenos">161</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-</span><span id="MetaLearning-162"><a href="#MetaLearning-162"><span class="linenos">162</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="MetaLearning-163"><a href="#MetaLearning-163"><span class="linenos">163</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning-164"><a href="#MetaLearning-164"><span class="linenos">164</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
+</span><span id="MetaLearning-133"><a href="#MetaLearning-133"><span class="linenos">133</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span> <span class="o">=</span> <span class="n">fh</span>
+</span><span id="MetaLearning-134"><a href="#MetaLearning-134"><span class="linenos">134</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="MetaLearning-135"><a href="#MetaLearning-135"><span class="linenos">135</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="MetaLearning-136"><a href="#MetaLearning-136"><span class="linenos">136</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+</span><span id="MetaLearning-137"><a href="#MetaLearning-137"><span class="linenos">137</span></a>      
+</span><span id="MetaLearning-138"><a href="#MetaLearning-138"><span class="linenos">138</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+</span><span id="MetaLearning-139"><a href="#MetaLearning-139"><span class="linenos">139</span></a>
+</span><span id="MetaLearning-140"><a href="#MetaLearning-140"><span class="linenos">140</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
+</span><span id="MetaLearning-141"><a href="#MetaLearning-141"><span class="linenos">141</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MetaLearning-142"><a href="#MetaLearning-142"><span class="linenos">142</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="MetaLearning-143"><a href="#MetaLearning-143"><span class="linenos">143</span></a><span class="sd">        Args:</span>
+</span><span id="MetaLearning-144"><a href="#MetaLearning-144"><span class="linenos">144</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
+</span><span id="MetaLearning-145"><a href="#MetaLearning-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="MetaLearning-146"><a href="#MetaLearning-146"><span class="linenos">146</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="MetaLearning-147"><a href="#MetaLearning-147"><span class="linenos">147</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
+</span><span id="MetaLearning-148"><a href="#MetaLearning-148"><span class="linenos">148</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning-149"><a href="#MetaLearning-149"><span class="linenos">149</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
+</span><span id="MetaLearning-150"><a href="#MetaLearning-150"><span class="linenos">150</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning-151"><a href="#MetaLearning-151"><span class="linenos">151</span></a>        
+</span><span id="MetaLearning-152"><a href="#MetaLearning-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">weights</span>
+</span><span id="MetaLearning-153"><a href="#MetaLearning-153"><span class="linenos">153</span></a>
+</span><span id="MetaLearning-154"><a href="#MetaLearning-154"><span class="linenos">154</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="MetaLearning-155"><a href="#MetaLearning-155"><span class="linenos">155</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MetaLearning-156"><a href="#MetaLearning-156"><span class="linenos">156</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="MetaLearning-157"><a href="#MetaLearning-157"><span class="linenos">157</span></a><span class="sd">        Args:</span>
+</span><span id="MetaLearning-158"><a href="#MetaLearning-158"><span class="linenos">158</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
+</span><span id="MetaLearning-159"><a href="#MetaLearning-159"><span class="linenos">159</span></a><span class="sd">            fh: forecast horizon for predicting</span>
+</span><span id="MetaLearning-160"><a href="#MetaLearning-160"><span class="linenos">160</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
+</span><span id="MetaLearning-161"><a href="#MetaLearning-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="MetaLearning-162"><a href="#MetaLearning-162"><span class="linenos">162</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="MetaLearning-163"><a href="#MetaLearning-163"><span class="linenos">163</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="MetaLearning-164"><a href="#MetaLearning-164"><span class="linenos">164</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning-165"><a href="#MetaLearning-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
 </span></pre></div>
 
 
@@ -533,7 +535,7 @@
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.loss_fn-38"><a href="#MetaLearning.loss_fn-38"><span class="linenos">38</span></a>    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
 </span><span id="MetaLearning.loss_fn-39"><a href="#MetaLearning.loss_fn-39"><span class="linenos">39</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.loss_fn-40"><a href="#MetaLearning.loss_fn-40"><span class="linenos">40</span></a><span class="sd">        Loss function for the meta-learner</span>
-</span><span id="MetaLearning.loss_fn-41"><a href="#MetaLearning.loss_fn-41"><span class="linenos">41</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.loss_fn-41"><a href="#MetaLearning.loss_fn-41"><span class="linenos">41</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.loss_fn-42"><a href="#MetaLearning.loss_fn-42"><span class="linenos">42</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="MetaLearning.loss_fn-43"><a href="#MetaLearning.loss_fn-43"><span class="linenos">43</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="MetaLearning.loss_fn-44"><a href="#MetaLearning.loss_fn-44"><span class="linenos">44</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -549,7 +551,7 @@
 
 
             <div class="docstring"><p>Loss function for the meta-learner
-inputs:
+Args:
     y_true: true values (numpy array) (num_series x horizon)
     Y_pred: the matrix of predictions (num_series x num_models x horizon)</p>
 </div>
@@ -570,7 +572,7 @@ inputs:
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.labels_selection-54"><a href="#MetaLearning.labels_selection-54"><span class="linenos">54</span></a>    <span class="k">def</span> <span class="nf">labels_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">,</span> <span class="n">return_one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="MetaLearning.labels_selection-55"><a href="#MetaLearning.labels_selection-55"><span class="linenos">55</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.labels_selection-56"><a href="#MetaLearning.labels_selection-56"><span class="linenos">56</span></a><span class="sd">        Generate labels for the meta-learner using selection</span>
-</span><span id="MetaLearning.labels_selection-57"><a href="#MetaLearning.labels_selection-57"><span class="linenos">57</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.labels_selection-57"><a href="#MetaLearning.labels_selection-57"><span class="linenos">57</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.labels_selection-58"><a href="#MetaLearning.labels_selection-58"><span class="linenos">58</span></a><span class="sd">            y_true: true values (numpy array) (num_series x horizon)</span>
 </span><span id="MetaLearning.labels_selection-59"><a href="#MetaLearning.labels_selection-59"><span class="linenos">59</span></a><span class="sd">            Y_pred: the matrix of predictions (num_series x num_models x horizon)</span>
 </span><span id="MetaLearning.labels_selection-60"><a href="#MetaLearning.labels_selection-60"><span class="linenos">60</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -588,7 +590,7 @@ inputs:
 
 
             <div class="docstring"><p>Generate labels for the meta-learner using selection
-inputs:
+Args:
     y_true: true values (numpy array) (num_series x horizon)
     Y_pred: the matrix of predictions (num_series x num_models x horizon)</p>
 </div>
@@ -609,7 +611,7 @@ inputs:
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.generate_labels-72"><a href="#MetaLearning.generate_labels-72"><span class="linenos">72</span></a>    <span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">Y_pred</span><span class="p">):</span>
 </span><span id="MetaLearning.generate_labels-73"><a href="#MetaLearning.generate_labels-73"><span class="linenos">73</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.generate_labels-74"><a href="#MetaLearning.generate_labels-74"><span class="linenos">74</span></a><span class="sd">        Generate labels for the meta-learner</span>
-</span><span id="MetaLearning.generate_labels-75"><a href="#MetaLearning.generate_labels-75"><span class="linenos">75</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.generate_labels-75"><a href="#MetaLearning.generate_labels-75"><span class="linenos">75</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.generate_labels-76"><a href="#MetaLearning.generate_labels-76"><span class="linenos">76</span></a><span class="sd">            y_true: true values</span>
 </span><span id="MetaLearning.generate_labels-77"><a href="#MetaLearning.generate_labels-77"><span class="linenos">77</span></a><span class="sd">            Y_pred: the matrix of predictions </span>
 </span><span id="MetaLearning.generate_labels-78"><a href="#MetaLearning.generate_labels-78"><span class="linenos">78</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -623,7 +625,7 @@ inputs:
 
 
             <div class="docstring"><p>Generate labels for the meta-learner
-inputs:
+Args:
     y_true: true values
     Y_pred: the matrix of predictions</p>
 </div>
@@ -667,7 +669,7 @@ inputs:
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.generate_prediction-93"><a href="#MetaLearning.generate_prediction-93"><span class="linenos"> 93</span></a>    <span class="k">def</span> <span class="nf">generate_prediction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forecaster</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="p">):</span>
 </span><span id="MetaLearning.generate_prediction-94"><a href="#MetaLearning.generate_prediction-94"><span class="linenos"> 94</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.generate_prediction-95"><a href="#MetaLearning.generate_prediction-95"><span class="linenos"> 95</span></a><span class="sd">        Generate predictions for a single forecaster</span>
-</span><span id="MetaLearning.generate_prediction-96"><a href="#MetaLearning.generate_prediction-96"><span class="linenos"> 96</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.generate_prediction-96"><a href="#MetaLearning.generate_prediction-96"><span class="linenos"> 96</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.generate_prediction-97"><a href="#MetaLearning.generate_prediction-97"><span class="linenos"> 97</span></a><span class="sd">            forecaster: the forecaster to be used</span>
 </span><span id="MetaLearning.generate_prediction-98"><a href="#MetaLearning.generate_prediction-98"><span class="linenos"> 98</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="MetaLearning.generate_prediction-99"><a href="#MetaLearning.generate_prediction-99"><span class="linenos"> 99</span></a><span class="sd">            fh: forecast horizon</span>
@@ -678,7 +680,7 @@ inputs:
 
 
             <div class="docstring"><p>Generate predictions for a single forecaster
-inputs:
+Args:
     forecaster: the forecaster to be used
     Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
     fh: forecast horizon
@@ -729,7 +731,7 @@ inputs:
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.add_metalearner-116"><a href="#MetaLearning.add_metalearner-116"><span class="linenos">116</span></a>    <span class="k">def</span> <span class="nf">add_metalearner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metalearner</span><span class="p">):</span>
 </span><span id="MetaLearning.add_metalearner-117"><a href="#MetaLearning.add_metalearner-117"><span class="linenos">117</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.add_metalearner-118"><a href="#MetaLearning.add_metalearner-118"><span class="linenos">118</span></a><span class="sd">        Add a meta-learner to the pipeline</span>
-</span><span id="MetaLearning.add_metalearner-119"><a href="#MetaLearning.add_metalearner-119"><span class="linenos">119</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.add_metalearner-119"><a href="#MetaLearning.add_metalearner-119"><span class="linenos">119</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.add_metalearner-120"><a href="#MetaLearning.add_metalearner-120"><span class="linenos">120</span></a><span class="sd">            metalearner: the meta-learner to be added a scikit-learn estimator</span>
 </span><span id="MetaLearning.add_metalearner-121"><a href="#MetaLearning.add_metalearner-121"><span class="linenos">121</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="MetaLearning.add_metalearner-122"><a href="#MetaLearning.add_metalearner-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span> <span class="o">=</span> <span class="n">metalearner</span>
@@ -737,7 +739,7 @@ inputs:
 
 
             <div class="docstring"><p>Add a meta-learner to the pipeline
-inputs:
+Args:
     metalearner: the meta-learner to be added a scikit-learn estimator</p>
 </div>
 
@@ -757,22 +759,23 @@ inputs:
             <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.fit-124"><a href="#MetaLearning.fit-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 </span><span id="MetaLearning.fit-125"><a href="#MetaLearning.fit-125"><span class="linenos">125</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MetaLearning.fit-126"><a href="#MetaLearning.fit-126"><span class="linenos">126</span></a><span class="sd">        Fit the meta-learner</span>
-</span><span id="MetaLearning.fit-127"><a href="#MetaLearning.fit-127"><span class="linenos">127</span></a><span class="sd">        inputs:</span>
+</span><span id="MetaLearning.fit-127"><a href="#MetaLearning.fit-127"><span class="linenos">127</span></a><span class="sd">        Args:</span>
 </span><span id="MetaLearning.fit-128"><a href="#MetaLearning.fit-128"><span class="linenos">128</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
 </span><span id="MetaLearning.fit-129"><a href="#MetaLearning.fit-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="MetaLearning.fit-130"><a href="#MetaLearning.fit-130"><span class="linenos">130</span></a>        <span class="c1"># data spliting for meta-learning</span>
 </span><span id="MetaLearning.fit-131"><a href="#MetaLearning.fit-131"><span class="linenos">131</span></a>        <span class="n">Y_true</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="o">-</span><span class="n">fh</span><span class="p">:,</span> <span class="n">forecast_dim</span><span class="p">]</span>
 </span><span id="MetaLearning.fit-132"><a href="#MetaLearning.fit-132"><span class="linenos">132</span></a>
-</span><span id="MetaLearning.fit-133"><a href="#MetaLearning.fit-133"><span class="linenos">133</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
-</span><span id="MetaLearning.fit-134"><a href="#MetaLearning.fit-134"><span class="linenos">134</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="MetaLearning.fit-135"><a href="#MetaLearning.fit-135"><span class="linenos">135</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
-</span><span id="MetaLearning.fit-136"><a href="#MetaLearning.fit-136"><span class="linenos">136</span></a>      
-</span><span id="MetaLearning.fit-137"><a href="#MetaLearning.fit-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+</span><span id="MetaLearning.fit-133"><a href="#MetaLearning.fit-133"><span class="linenos">133</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span> <span class="o">=</span> <span class="n">fh</span>
+</span><span id="MetaLearning.fit-134"><a href="#MetaLearning.fit-134"><span class="linenos">134</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="MetaLearning.fit-135"><a href="#MetaLearning.fit-135"><span class="linenos">135</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="n">fh</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="MetaLearning.fit-136"><a href="#MetaLearning.fit-136"><span class="linenos">136</span></a>        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">Y_true</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+</span><span id="MetaLearning.fit-137"><a href="#MetaLearning.fit-137"><span class="linenos">137</span></a>      
+</span><span id="MetaLearning.fit-138"><a href="#MetaLearning.fit-138"><span class="linenos">138</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">meta_features</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Fit the meta-learner
-inputs:
+Args:
     Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</p>
 </div>
 
@@ -789,24 +792,24 @@ inputs:
 
     </div>
     <a class="headerlink" href="#MetaLearning.predict_generate_weights"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.predict_generate_weights-139"><a href="#MetaLearning.predict_generate_weights-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
-</span><span id="MetaLearning.predict_generate_weights-140"><a href="#MetaLearning.predict_generate_weights-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="MetaLearning.predict_generate_weights-141"><a href="#MetaLearning.predict_generate_weights-141"><span class="linenos">141</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="MetaLearning.predict_generate_weights-142"><a href="#MetaLearning.predict_generate_weights-142"><span class="linenos">142</span></a><span class="sd">        inputs:</span>
-</span><span id="MetaLearning.predict_generate_weights-143"><a href="#MetaLearning.predict_generate_weights-143"><span class="linenos">143</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
-</span><span id="MetaLearning.predict_generate_weights-144"><a href="#MetaLearning.predict_generate_weights-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="MetaLearning.predict_generate_weights-145"><a href="#MetaLearning.predict_generate_weights-145"><span class="linenos">145</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="MetaLearning.predict_generate_weights-146"><a href="#MetaLearning.predict_generate_weights-146"><span class="linenos">146</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
-</span><span id="MetaLearning.predict_generate_weights-147"><a href="#MetaLearning.predict_generate_weights-147"><span class="linenos">147</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning.predict_generate_weights-148"><a href="#MetaLearning.predict_generate_weights-148"><span class="linenos">148</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
-</span><span id="MetaLearning.predict_generate_weights-149"><a href="#MetaLearning.predict_generate_weights-149"><span class="linenos">149</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning.predict_generate_weights-150"><a href="#MetaLearning.predict_generate_weights-150"><span class="linenos">150</span></a>        
-</span><span id="MetaLearning.predict_generate_weights-151"><a href="#MetaLearning.predict_generate_weights-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">weights</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.predict_generate_weights-140"><a href="#MetaLearning.predict_generate_weights-140"><span class="linenos">140</span></a>    <span class="k">def</span> <span class="nf">predict_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_features</span><span class="p">):</span>
+</span><span id="MetaLearning.predict_generate_weights-141"><a href="#MetaLearning.predict_generate_weights-141"><span class="linenos">141</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MetaLearning.predict_generate_weights-142"><a href="#MetaLearning.predict_generate_weights-142"><span class="linenos">142</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="MetaLearning.predict_generate_weights-143"><a href="#MetaLearning.predict_generate_weights-143"><span class="linenos">143</span></a><span class="sd">        Args:</span>
+</span><span id="MetaLearning.predict_generate_weights-144"><a href="#MetaLearning.predict_generate_weights-144"><span class="linenos">144</span></a><span class="sd">            metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</span>
+</span><span id="MetaLearning.predict_generate_weights-145"><a href="#MetaLearning.predict_generate_weights-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="MetaLearning.predict_generate_weights-146"><a href="#MetaLearning.predict_generate_weights-146"><span class="linenos">146</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="MetaLearning.predict_generate_weights-147"><a href="#MetaLearning.predict_generate_weights-147"><span class="linenos">147</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;selection&#39;</span><span class="p">:</span>
+</span><span id="MetaLearning.predict_generate_weights-148"><a href="#MetaLearning.predict_generate_weights-148"><span class="linenos">148</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning.predict_generate_weights-149"><a href="#MetaLearning.predict_generate_weights-149"><span class="linenos">149</span></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;averaging&#39;</span><span class="p">:</span>
+</span><span id="MetaLearning.predict_generate_weights-150"><a href="#MetaLearning.predict_generate_weights-150"><span class="linenos">150</span></a>            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_learner</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning.predict_generate_weights-151"><a href="#MetaLearning.predict_generate_weights-151"><span class="linenos">151</span></a>        
+</span><span id="MetaLearning.predict_generate_weights-152"><a href="#MetaLearning.predict_generate_weights-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">weights</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Predict using the meta-learner
-inputs:
+Args:
     metafeatures: the extracted meta-features (numpy array) (num_series x features_dim)</p>
 </div>
 
@@ -817,29 +820,29 @@ inputs:
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">predict</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">Y</span>, </span><span class="param"><span class="n">fh</span>, </span><span class="param"><span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span></span>)</span>
+        <span class="name">predict</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">Y</span>, </span><span class="param"><span class="n">fh</span>, </span><span class="param"><span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span>, </span><span class="param"><span class="n">return_weights</span><span class="o">=</span><span class="kc">False</span></span>)</span>
 
                 <label class="view-source-button" for="MetaLearning.predict-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#MetaLearning.predict"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.predict-153"><a href="#MetaLearning.predict-153"><span class="linenos">153</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-</span><span id="MetaLearning.predict-154"><a href="#MetaLearning.predict-154"><span class="linenos">154</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="MetaLearning.predict-155"><a href="#MetaLearning.predict-155"><span class="linenos">155</span></a><span class="sd">        Predict using the meta-learner</span>
-</span><span id="MetaLearning.predict-156"><a href="#MetaLearning.predict-156"><span class="linenos">156</span></a><span class="sd">        inputs:</span>
-</span><span id="MetaLearning.predict-157"><a href="#MetaLearning.predict-157"><span class="linenos">157</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
-</span><span id="MetaLearning.predict-158"><a href="#MetaLearning.predict-158"><span class="linenos">158</span></a><span class="sd">            fh: forecast horizon for predicting</span>
-</span><span id="MetaLearning.predict-159"><a href="#MetaLearning.predict-159"><span class="linenos">159</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
-</span><span id="MetaLearning.predict-160"><a href="#MetaLearning.predict-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="MetaLearning.predict-161"><a href="#MetaLearning.predict-161"><span class="linenos">161</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-</span><span id="MetaLearning.predict-162"><a href="#MetaLearning.predict-162"><span class="linenos">162</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
-</span><span id="MetaLearning.predict-163"><a href="#MetaLearning.predict-163"><span class="linenos">163</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
-</span><span id="MetaLearning.predict-164"><a href="#MetaLearning.predict-164"><span class="linenos">164</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MetaLearning.predict-154"><a href="#MetaLearning.predict-154"><span class="linenos">154</span></a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="MetaLearning.predict-155"><a href="#MetaLearning.predict-155"><span class="linenos">155</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MetaLearning.predict-156"><a href="#MetaLearning.predict-156"><span class="linenos">156</span></a><span class="sd">        Predict using the meta-learner</span>
+</span><span id="MetaLearning.predict-157"><a href="#MetaLearning.predict-157"><span class="linenos">157</span></a><span class="sd">        Args:</span>
+</span><span id="MetaLearning.predict-158"><a href="#MetaLearning.predict-158"><span class="linenos">158</span></a><span class="sd">            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)</span>
+</span><span id="MetaLearning.predict-159"><a href="#MetaLearning.predict-159"><span class="linenos">159</span></a><span class="sd">            fh: forecast horizon for predicting</span>
+</span><span id="MetaLearning.predict-160"><a href="#MetaLearning.predict-160"><span class="linenos">160</span></a><span class="sd">            forecast_dim: the dimension of the variable to be forecasted</span>
+</span><span id="MetaLearning.predict-161"><a href="#MetaLearning.predict-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="MetaLearning.predict-162"><a href="#MetaLearning.predict-162"><span class="linenos">162</span></a>        <span class="n">meta_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_features</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">features_fh</span><span class="p">,</span> <span class="p">:])</span>
+</span><span id="MetaLearning.predict-163"><a href="#MetaLearning.predict-163"><span class="linenos">163</span></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_predictions</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">forecast_dim</span><span class="o">=</span><span class="n">forecast_dim</span><span class="p">)</span>
+</span><span id="MetaLearning.predict-164"><a href="#MetaLearning.predict-164"><span class="linenos">164</span></a>        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_generate_weights</span><span class="p">(</span><span class="n">meta_features</span><span class="p">)</span>
+</span><span id="MetaLearning.predict-165"><a href="#MetaLearning.predict-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">predictions</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Predict using the meta-learner
-inputs:
+Args:
     Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
     fh: forecast horizon for predicting
     forecast_dim: the dimension of the variable to be forecasted</p>
