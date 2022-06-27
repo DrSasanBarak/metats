@@ -10,10 +10,12 @@ class DeepAETrainer(PyTorchTrainer):
         super().__init__(*args, **kwargs)
 
     def get_mini_batch(self):
-        indices = np.random.choice(self.Y.shape[0], number_of_samples, replace=False)
+        data_size = self.Y.shape[0]
+        sample_size = min(self.batch_size, data_size)
+        indices = np.random.choice(data_size, sample_size, replace=False)
         mini_batch = self.Y[indices]
         mini_batch_tensor = torch.from_numpy(mini_batch).float()
-        return {'Y' : minibatch_tensor}
+        return {'Y' : mini_batch_tensor}
 
 class DeepAutoEncoder(FeatureGenerator):
     """
