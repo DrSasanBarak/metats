@@ -93,6 +93,81 @@ class LSTMDecoder(nn.Module):
     return Y
 
 
+class MLPEncoder(nn.Module):
+  """
+  A general class for MLP encoder
+  """
+  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32,)):
+    """
+    inputs:
+        input_size: dimension of input series
+        input_length : length of input series
+        latent_size: dimension of latent representation
+        hidden_layers: a tuple of hidden layers dimension
+    """
+    super().__init__()
+
+    # input layer
+    mlp_layers = [nn.Linear(input_size*input_length, hidden_layers[0])]
+    mlp_layers.append(nn.Tanh())
+   
+    # hidden layers
+    for layer in range(len(hidden_layers)-1):
+      mlp_layers.append(nn.Linear(hidden_layers[layer], hidden_layers[layer+1]))
+      mlp_layers.append(nn.Tanh())
+    
+    # output layer
+    mlp_layers.append(nn.Linear(hidden_layers[-1], latent_size))
+    mlp_layers.append(nn.Tanh())
+
+    self.mlp = nn.Sequential(*mlp_layers)
+    
+    self.latent_size = latent_size
+  
+  
+  def forward(self, Y):
+    Y = Y.flatten(1)
+    z = self.mlp(Y)
+    return z
+
+class MLPDecoder(nn.Module):
+  """
+  A general class for MLP encoder
+  """
+  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32)):
+    """
+    inputs:
+        input_size: dimension of input series
+        input_length : length of input series
+        latent_size: dimension of latent representation
+        hidden_layers: a tuple of hidden layers dimension
+    """
+    super().__init__()
+
+    # input layer
+    mlp_layers = [nn.Linear(latent_size, hidden_layers[0])]
+    mlp_layers.append(nn.Tanh())
+   
+    # hidden layers
+    for layer in range(len(hidden_layers)-1):
+      mlp_layers.append(nn.Linear(hidden_layers[layer], hidden_layers[layer+1]))
+      mlp_layers.append(nn.Tanh())
+    
+    # output layer
+    mlp_layers.append(nn.Linear(hidden_layers[-1], input_size*input_length))
+    mlp_layers.append(nn.Tanh())
+
+    self.mlp = nn.Sequential(*mlp_layers)
+    self.unflatten = nn.Unflatten(1, (input_length, input_size))
+
+    self.latent_size = latent_size
+  
+  
+  def forward(self, latent):
+    Y = self.mlp(latent)
+    Y = self.unflatten(Y)
+    return Y
+
 class AutoEncoder(nn.Module):
   """
   General AutoEncoder class
