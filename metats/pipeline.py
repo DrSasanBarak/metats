@@ -39,7 +39,7 @@ class MetaLearning():
         """
         self.feature_generators.append(feature_generator)
     
-    def add_forcecaster(self, forecaster):
+    def add_forecaster(self, forecaster):
         """
         Add a base forecaster to the pipeline
         """
