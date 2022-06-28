@@ -43,7 +43,7 @@ class DeepAutoEncoder(FeatureGenerator):
     def transform(self, Y):
         Y_tensor = torch.from_numpy(Y).float()
         latent = self.auto_encoder.encode(Y_tensor, inference=True)
-        return latent
+        return latent.numpy()
 
 class Contrastive(FeatureGenerator):
     """
