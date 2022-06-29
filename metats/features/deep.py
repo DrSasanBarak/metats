@@ -93,6 +93,97 @@ class LSTMDecoder(nn.Module):
     return Y
 
 
+class GRUEncoder(nn.Module):
+  """
+  A general class for stacked GRU encoders
+  """
+  def __init__(self, input_size, latent_size, hidden_size, num_layers, directions):
+    """
+    inputs:
+        input_size: dimension of input series
+        latent_size: dimension of latent representation
+        hidden_size: dimension of lstm hidden cells
+        num_layers: number of stacked lstm
+        directions: 1 for ordinary and 2 for bi-directional lstm
+    """
+    super().__init__()
+
+    is_bidirectional = (directions == 2)
+
+    self.gru = nn.GRU(input_size, hidden_size=hidden_size,
+                      bidirectional=is_bidirectional, num_layers=num_layers)
+    
+    self.proj = nn.Linear(hidden_size, latent_size)
+
+    self.latent_size = latent_size
+    self.num_layers = num_layers
+    self.directions = directions
+    self.hidden_size = hidden_size
+  
+  def get_initial(self, batch_size):
+    h_size = (self.directions * self.num_layers, batch_size, self.hidden_size)
+    h0 = torch.zeros(h_size)
+    return h0
+  
+  def forward(self, Y):
+    bsize = Y.size(0)
+    Y = Y.permute(1, 0, 2)
+    h0 = self.get_initial(bsize)
+    _, h = self.gru(Y, h0)
+    z = h.permute(1, 0, 2).mean(1)
+    z = self.proj(z)
+    return z
+
+class GRUDecoder(nn.Module):
+  """
+  A General class for stacked gru decoder
+  """
+  def __init__(self, output_length, output_size, hidden_size, latent_size, num_layers, directions):
+    """
+    inputs:
+        output_length: length of the output (reconstructed) series
+        output_size: dimension of the output (reconstructed) series
+        latent_size: dimension of latent representation
+        hidden_size: dimension of gru hidden cells
+        num_layers: number of stacked gru
+        directions: 1 for ordinary and 2 for bi-directional gru
+    """
+    super().__init__()
+
+    is_bidirectional = (directions == 2)
+    
+    self.gru = nn.GRU(latent_size, hidden_size=hidden_size,
+                      bidirectional=is_bidirectional, num_layers=num_layers)
+    
+    self.proj = nn.Linear(hidden_size, output_size)
+
+    self.latent_size = latent_size
+    self.num_layers = num_layers
+    self.directions = directions
+    self.output_length = output_length
+    self.output_size = output_size
+    self.hidden_size = hidden_size
+  
+  def get_initial(self, batch_size):
+    h_size = (self.directions * self.num_layers, batch_size, self.hidden_size)
+    h0 = torch.zeros(h_size)
+    return h0
+  
+  def forward(self, latent):
+    bsize = latent.size(0)
+  
+    gru_in = latent.unsqueeze(1).repeat(1, self.output_length, 1)
+    gru_in = gru_in.permute(1, 0, 2)
+
+    h0 = self.get_initial(bsize)
+
+    out, _ = self.gru(gru_in, h0)
+    Y = 0.5 * (out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:])
+    Y = Y.permute(1, 0, 2)
+    Y = self.proj(Y)
+    return Y
+
+
 class MLPEncoder(nn.Module):
   """
   A general class for MLP encoder
