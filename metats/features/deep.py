@@ -97,28 +97,33 @@ class MLPEncoder(nn.Module):
   """
   A general class for MLP encoder
   """
-  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32,)):
+  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32,), activation=None):
     """
     inputs:
         input_size: dimension of input series
         input_length : length of input series
         latent_size: dimension of latent representation
         hidden_layers: a tuple of hidden layers dimension
+        activation: a custom activation function which can be any PyTorch module supporting a backward pass,
+                    if None passed, then the nn.Tanh() wiil be used
     """
     super().__init__()
 
+    if activation == None:
+      activation = nn.Tanh
+
     # input layer
     mlp_layers = [nn.Linear(input_size*input_length, hidden_layers[0])]
-    mlp_layers.append(nn.Tanh())
+    mlp_layers.append(activation())
    
     # hidden layers
     for layer in range(len(hidden_layers)-1):
       mlp_layers.append(nn.Linear(hidden_layers[layer], hidden_layers[layer+1]))
-      mlp_layers.append(nn.Tanh())
+      mlp_layers.append(activation())
     
     # output layer
     mlp_layers.append(nn.Linear(hidden_layers[-1], latent_size))
-    mlp_layers.append(nn.Tanh())
+    mlp_layers.append(activation())
 
     self.mlp = nn.Sequential(*mlp_layers)
     
@@ -134,28 +139,33 @@ class MLPDecoder(nn.Module):
   """
   A general class for MLP encoder
   """
-  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32)):
+  def __init__(self, input_size, input_length, latent_size, hidden_layers=(32), activation=None):
     """
     inputs:
         input_size: dimension of input series
         input_length : length of input series
         latent_size: dimension of latent representation
         hidden_layers: a tuple of hidden layers dimension
+        activation: a custom activation function which can be any PyTorch module supporting a backward pass,
+                    if None passed, then the nn.Tanh() wiil be used
     """
     super().__init__()
 
+    if activation == None:
+      activation = nn.Tanh
+    
     # input layer
     mlp_layers = [nn.Linear(latent_size, hidden_layers[0])]
-    mlp_layers.append(nn.Tanh())
+    mlp_layers.append(activation())
    
     # hidden layers
     for layer in range(len(hidden_layers)-1):
       mlp_layers.append(nn.Linear(hidden_layers[layer], hidden_layers[layer+1]))
-      mlp_layers.append(nn.Tanh())
+      mlp_layers.append(activation())
     
     # output layer
     mlp_layers.append(nn.Linear(hidden_layers[-1], input_size*input_length))
-    mlp_layers.append(nn.Tanh())
+    mlp_layers.append(activation())
 
     self.mlp = nn.Sequential(*mlp_layers)
     self.unflatten = nn.Unflatten(1, (input_length, input_size))
