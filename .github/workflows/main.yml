@@ -2,10 +2,13 @@ name: Documentation
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
+    paths:
+      - 'metats/**/*.py'
     branches: [ "main" ]
   pull_request:
+    paths:
+      - 'metats/**/*.py'
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
