@@ -25,7 +25,18 @@ jobs:
       # installing packages
       - name: Installing dependencies
         run: pip install -r requirements.txt
-      
+
       # API Reference
       - name: Building API Reference
         run: pdoc metats -o docs/api
+
+      - name: setup git config
+        run: |
+          git config user.name "Documentation Bot"
+          git config user.email "<>"
+      
+      - name: commit generated docs
+        run: |
+          git add docs
+          git commit -m "updating the API reference"
+          git push origin main
