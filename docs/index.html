@@ -1,7 +1,183 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=./metats.html"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaTS | Meta-Learning for Time Series Forecasting</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/style/github-dark.min.css">
+    <link rel="stylesheet" href="assets/style/app.css">
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 </head>
+<body>
+    <div id="app">
+        <div class="intro">
+            <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                  <a class="navbar-item has-text-weight-bold is-size-4" href="#">
+                      MetaTS
+                  </a>
+              
+                  <a role="button" class="navbar-burger" aria-label="menu"  data-target="topbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                  </a>
+                </div>
+              
+                <div id="topbar" class="navbar-menu">
+                  <div class="navbar-start">
+                    <a href="#start" class="navbar-item">
+                      Quick Start
+                    </a>
+
+                    <a href="#start" class="navbar-item">
+                      Examples
+                    </a>
+              
+                    <a href="./api/index.html" class="navbar-item" target="_blank">
+                      API Reference
+                    </a>
+        
+                    <a href="#about" class="navbar-item">
+                        About
+                    </a>
+              
+                  </div>
+              
+                  <div class="navbar-end">
+                    <div class="navbar-item">
+                      <div class="buttons">
+                        <a target="_blank" href="https://github.com/amirabbasasadi/metats" class="button is-success">
+                            <span class="icon">
+                                <i class="fab fa-github"></i>
+                              </span>
+                              <span class="has-text-weight-bold">GitHub</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              
+<section class="intro-head">
+  <div class="columns is-centered">
+    <div class="column is-narrow intro-desc">
+        <p class="title is-size-1">
+            MetaTS <span class="tag is-info">0.1.0</span>
+          </p>
+          <p class="subtitle">
+            Meta Learning for Time Series Forecasting
+          </p>
+        <div class="icon-text">
+            <span class="icon">
+                <i class="fas fa-check-square"></i>
+            </span>
+            <span>Statistical Meta-Features</span>
+        </div>
+        <div class="icon-text">
+            <span class="icon">
+                <i class="fas fa-check-square"></i>
+            </span>
+            <span>Deep Unsupervised Meta-Features</span>
+        </div>
+        <div class="icon-text">
+            <span class="icon">
+                <i class="fas fa-check-square"></i>
+            </span>
+            <span>Meta-Learning Pipeline</span>
+        </div>
+        <div class="buttons">
+            <a href="#start" class="button is-danger">
+                <span class="icon">
+                  <i class="fas fa-paper-plane"></i>
+                </span> 
+                <span class="has-text-weight-bold">Quick Start</span>
+            </a>
+            <a target="_blank" href="https://github.com/amirabbasasadi/metats" class="button is-primary">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                  <span class="has-text-weight-bold">GitHub</span>
+            </a>
+          </div>
+          
+        
+    </div>
+    <div class="column is-narrow">
+<pre><code>
+from metats.pipeline import MetaLearning
+
+pipeline = MetaLearning(method='selection')
+
+# feature extraction using deep auto encoders
+pipeline.add_feature(lstm_auto_encoder)
+# statistical features
+pipeline.add_feature(tsfresh_feature_generator)
+
+# adding a few base forecasters
+pipeline.add_forecaster(arima_forecaster)
+pipeline.add_forecaster(ets_forecaster)
+pipeline.add_forecaster(xgboost_forecaster)
+
+# define a meta-learner
+pipeline.add_metalearner(RandomForestClassifier())
+# training the models in the pipeline
+pipeline.fit(data, fh=7)
+
+</code></pre>
+</div>
+  </div>
+</section>
+        </div>
+        <div class="main-container">
+            <div class="container">
+                
+                <div class="getting-started" id="start">
+                    <h2 class="has-text-centered is-size-3">Quick Start</h2>
+                    <div class="columns is-centered">
+                        <div class="column is-three-quarters">
+<pre><code>pip install metats</code></pre>
+                        </div>
+                </div>
+                
+                <div class="about", id="about">
+                    
+                    
+                    
+                </div>
+            </div>
+            
+        </div>
+          
+        <div>
+        
+        </div>
+    
+          
+    </div>
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+          </p>
+        </div>
+      </footer>
+    
+      <script src="https://kit.fontawesome.com/c38f85491f.js" crossorigin="anonymous"></script>
+      <script src="assets/scripts/highlight.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="assets/scripts/app.js"></script>
+    </body>
 </html>

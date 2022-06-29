@@ -1,0 +1,57 @@
+.intro{
+    background: white !important;
+}
+.navbar, .navbar-menu{
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+.navbar-item:hover{
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+.intro-head{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.intro-desc{
+    padding-top:40px;
+}
+.intro-desc .icon-text{
+    margin-bottom: 20px;
+}
+pre{
+    background-color: inherit;
+}
+code{
+    border-radius: 5px;
+}
+.main-container{
+    padding-top: 20px;
+}
+.main-container p{
+    margin-bottom: 10px;
+    line-height: 30px;
+}
+.main-container h2{
+    margin-bottom: 20px;
+    margin-top: 25px;
+}
+.main-container h3{
+    margin-bottom: 20px;
+}
+.footer{
+    margin-top: 3rem;
+    padding: 3rem 1.5rem 2rem
+}
+.gallery img{
+    border-radius: 3px;
+}
+.fractal-example{
+    max-width: 600px;
+    max-height: 600px;
+}
+.main-container, .intro-head{
+    padding-left:15px;
+    padding-right:15px;
+}
+.intro-video, .intro-img{
+    border-radius: 4px;
+}
