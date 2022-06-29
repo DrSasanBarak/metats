@@ -102,11 +102,13 @@ class MetaLearning():
         else:
             raise ValueError('Method not supported')
         
-    def generate_features(self, Y):
+    def generate_features(self, Y, prediction=False):
         # generate meta features
         meta_features = []
         for feature_generator in self.feature_generators:
-            meta_features.append(feature_generator.fit_transform(Y))
+            if (not prediction) or (not feature_generator.is_trainable()):
+                feature_generator.fit(Y) 
+            meta_features.append(feature_generator.transform(Y))
         return np.hstack(meta_features)
     
     def generate_prediction(self, forecaster, Y, fh, forecast_dim):
@@ -167,7 +169,7 @@ class MetaLearning():
         Y_true = Y[:, -fh:, forecast_dim]
 
         self.features_fh = fh
-        meta_features = self.generate_features(Y[:, :-fh, :])
+        meta_features = self.generate_features(Y[:, :-fh, :], prediction=False)
         predictions = self.generate_predictions(Y[:, :-fh, :], fh, forecast_dim=forecast_dim)
         labels = self.generate_labels(Y_true, predictions)
         
@@ -222,7 +224,7 @@ class MetaLearning():
             fh: forecast horizon for predicting
             forecast_dim: the dimension of the variable to be forecasted
         """
-        meta_features = self.generate_features(Y[:, :-self.features_fh, :])
+        meta_features = self.generate_features(Y[:, :-self.features_fh, :], prediction=True)
 
         if self.reduction != 'none':
             meta_features = self.reduce_meta_features(meta_features, prediction=True)

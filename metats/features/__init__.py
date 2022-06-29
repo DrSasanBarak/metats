@@ -21,3 +21,6 @@ class FeatureGenerator():
     def fit_transform(self, timeseries):
         self.fit(timeseries)
         return self.transform(timeseries)
+
+    def is_trainable(self):
+        return False
