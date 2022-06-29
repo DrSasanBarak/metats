@@ -1,5 +1,0 @@
-numpy
-pandas
-tsfresh
-sktime
-pytest
