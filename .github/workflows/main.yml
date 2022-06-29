@@ -24,7 +24,7 @@ jobs:
       
       # installing packages
       - name: Installing pdoc
-      - run: pip install pdoc
+        run: pip install pdoc
       
       # API Reference
       - name: Building API Reference
