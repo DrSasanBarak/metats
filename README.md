@@ -18,7 +18,7 @@
 pip install metats
 ```
 
-### Generating a toy dataset by sample two different processes
+### Generating a toy dataset by sampling from two different processes
 ```python
 from metats.datasets import ETSDataset
 
