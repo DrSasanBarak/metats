@@ -143,7 +143,7 @@ Training the pipeline
 ```python
 pipeline.fit(data, fh=7)
 ```
-Prection for another set of data
+Prediction for another set of data
 ```python
 pipeline.predict(data, fh=7)
 ```
