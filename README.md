@@ -139,6 +139,13 @@ forecaster2 = NaiveForecaster()
 pipeline.add_forecaster(forecaster1)
 pipeline.add_forecaster(forecaster2)
 ```
+Specify some meta-learner
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+pipeline.add_metalearner(RandomForestClassifier())
+```
+
 Training the pipeline
 ```python
 pipeline.fit(data, fh=7)
