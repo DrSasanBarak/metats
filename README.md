@@ -96,3 +96,11 @@ _ = plt.show()
 ![image](https://user-images.githubusercontent.com/8543469/176526565-e26cbd0c-2b20-4848-995e-e12632bde8e3.png)
 ![image](https://user-images.githubusercontent.com/8543469/176526711-989e1ac3-2af8-4d27-a90d-ea6007594f36.png)
 
+
+## About the package
+### Contributors
+- Sasan Barak
+- Amirabbas Asadi
+- Mohammad Joshaghani
+
+We wish to see your name in the list of contributors, So we are waiting for pull requests!
