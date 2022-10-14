@@ -159,6 +159,6 @@ pipeline.predict(data, fh=7)
 ### Contributors
 - Sasan Barak
 - Amirabbas Asadi
-- Mohammad Joshaghani
+
 
 We wish to see your name in the list of contributors, So we are waiting for pull requests!
