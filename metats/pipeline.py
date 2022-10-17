@@ -224,13 +224,20 @@ class MetaLearning():
         result = np.vstack(selected_predictions)
         return result
 
-    def predict(self, Y, fh, forecast_dim=0, return_weights=False):
+    def predict(self, Y, fh, forecast_dim=0, return_metalearning_data=False):
         """
         Predict using the meta-learner
         Args:
             Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
             fh: forecast horizon for predicting
             forecast_dim: the dimension of the variable to be forecasted
+            return_metalearning_data: if True, the meta-features, weights and base forecasts will be returned
+        Return:
+            result: (numpy array) (num_series x forecast_horizon)
+            if return_metalearning_data is True:
+                predictions: (numpy array) (num_series x number_of_base_forecasters x forecast_horizon)
+                weights: (numpy array) (num_series x number_of_base_forecasters)
+                meta_features: (numpy array) (num_series x features_dim)
         """
         meta_features = self.generate_features(Y[:, :-self.features_fh, :], prediction=True)
 
@@ -245,8 +252,8 @@ class MetaLearning():
         else:
             result = self.selection_predictions(weights, predictions)
 
-        if return_weights:
-            return result, predictions, weights
+        if return_metalearning_data:
+            return result, predictions, weights, meta_features
         
         return result
 
