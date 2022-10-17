@@ -1,5 +1,6 @@
 # MetaTS | Meta-Learning for Global Time Series Forecasting
 ![example workflow](https://github.com/amirabbasasadi/metats/actions/workflows/main.yml/badge.svg)
+[![PyPI version fury.io](https://badge.fury.io/py/metats.svg)](https://pypi.python.org/pypi/metats/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![GitHub license](https://img.shields.io/github/license/amirabbasasadi/metats.svg)](https://github.com/amirabbasasadi/metats/blob/master/LICENSE)
 ![image](https://user-images.githubusercontent.com/8543469/176514410-bf8efea2-fb54-4903-a0ee-169c9595958a.png)
@@ -95,3 +96,69 @@ _ = plt.show()
 ![image](https://user-images.githubusercontent.com/8543469/176526565-e26cbd0c-2b20-4848-995e-e12632bde8e3.png)
 ![image](https://user-images.githubusercontent.com/8543469/176526711-989e1ac3-2af8-4d27-a90d-ea6007594f36.png)
 
+
+
+## Meta-Learning Pipeline
+Creating a meta-learning pipeline with selection strategy:
+```python
+from metats.pipeline import MetaLearning
+
+pipeline = MetaLearning(method='selection', loss='mse')
+```
+Adding AutoEncoder features:
+```python
+from metats.features.unsupervised import DeepAutoEncoder
+from metats.features.deep import AutoEncoder, MLPEncoder, MLPDecoder
+
+enc = MLPEncoder(input_size=1, input_length=23, latent_size=8, hidden_layers=(16,))
+dec = MLPDecoder(input_size=1, input_length=23, latent_size=8, hidden_layers=(16,))
+
+ae = AutoEncoder(encoder=enc, decoder=dec)
+ae_features = DeepAutoEncoder(auto_encoder=ae, epochs=200, verbose=True)
+
+pipeline.add_feature(ae_features)
+```
+You can add as many features as you like:
+```python
+from metats.features.statistical import TsFresh
+
+stat_features = TsFresh()
+pipeline.add_feature(stat_features)
+```
+Adding two sktime forecaster as base-forecasters
+```python
+from sktime.forecasting.naive import NaiveForecaster
+from sktime.forecasting.compose import make_reduction
+from sklearn.neighbors import KNeighborsRegressor
+
+regressor = KNeighborsRegressor(n_neighbors=1)
+forecaster1 = make_reduction(regressor, window_length=15, strategy="recursive")
+
+forecaster2 = NaiveForecaster() 
+
+pipeline.add_forecaster(forecaster1)
+pipeline.add_forecaster(forecaster2)
+```
+Specify some meta-learner
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+pipeline.add_metalearner(RandomForestClassifier())
+```
+
+Training the pipeline
+```python
+pipeline.fit(data, fh=7)
+```
+Prediction for another set of data
+```python
+pipeline.predict(data, fh=7)
+```
+
+## About the package
+### Contributors
+- Sasan Barak
+- Amirabbas Asadi
+
+
+We wish to see your name in the list of contributors, So we are waiting for pull requests!
