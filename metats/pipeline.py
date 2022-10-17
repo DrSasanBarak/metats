@@ -25,6 +25,7 @@ class MetaLearning():
         self.method = method
         self.feature_generators = []
         self.base_forecasters = []
+        self.base_forecasters_name = []
         self.meta_learner = None
         self.loss = loss
         self.reduction = reduction
@@ -39,19 +40,26 @@ class MetaLearning():
         """
         self.feature_generators.append(feature_generator)
     
-    def add_forecaster(self, forecaster):
+    def add_forecaster(self, forecaster, forecaster_name=""):
         """
         Add a base forecaster to the pipeline
         """
         # checking for dart forecasters
+        wrapped = forecaster
         if is_darts_forecaster(forecaster):
             wrapped = DartsForecasterWrapper(forecaster)
-            self.base_forecasters.append(wrapped)   
         elif is_sktime_forecaster(forecaster):
             wrapped = SKTimeForecasterWrapper(forecaster)
-            self.base_forecasters.append(wrapped) 
-        else:
-            self.base_forecasters.append(forecaster)
+        # append the wrapped forecaster to the stack
+        self.base_forecasters.append(wrapped)
+        # generate a name for forecater
+        name = "Forecaster {}".format(len(self.base_forecasters))
+        if len(forecaster_name) > 0:
+            name = forecaster_name
+        self.base_forecasters_name.append(name)
+
+        
+
     
     def loss_fn(self, y_true, y_pred):
         """
@@ -236,6 +244,9 @@ class MetaLearning():
             result = self.averaging_predictions(weights, predictions)
         else:
             result = self.selection_predictions(weights, predictions)
+
+        if return_weights:
+            return result, predictions, weights
         
         return result
 
