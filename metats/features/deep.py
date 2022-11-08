@@ -275,7 +275,7 @@ class Encoder_Decoder_TCN(nn.Module):
   """
   A general class for Encoder decoder with 
   dilated Temporal Convolutional Networks (TCN).
-  *NOTE*: make sure `input_size` is devisible by $2**\norm{hidden_layers}_1$.
+  *NOTE*: make sure `input_size` is devisible by $2 ^ {||{hidden\_layers}||_0}$.
   """
   def __init__(self, input_size, input_length, hidden_layers=(128,64),
                kernel_size =8, dilation=2, activation=None, dropout=0.3):
