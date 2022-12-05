@@ -89,8 +89,8 @@ class LSTMDecoder(nn.Module):
     h0, c0 = self.get_initial(bsize)
 
     out, _ = self.lstm(lstm_in, (h0, c0))
-    Y = 0.5 * (out[:, :, :self.output_size] + out[:, :, self.output_size:])
-    Y = Y.permute(1, 0, 2)
+    # Y = 0.5 * (out[:, :, :self.output_size] + out[:, :, self.output_size:])
+    Y = out.permute(1, 0, 2)
     return Y
 
 
