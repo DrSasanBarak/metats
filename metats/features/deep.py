@@ -271,7 +271,7 @@ class MLPDecoder(nn.Module):
     return Y
 
 
-class Encoder_Decoder_TCN(nn.Module):
+class Encoder_Decoder_TCN():
   """
   A general class for Encoder decoder with 
   dilated Temporal Convolutional Networks (TCN).
@@ -296,37 +296,63 @@ class Encoder_Decoder_TCN(nn.Module):
       raise ValueError(f"'Time series length' has to be divisible by number of "\
                        f"'hidden_layers', but {input_length} is not divisible by {2**len(hidden_layers)}!")
     
-    super().__init__()
     depth = len(hidden_layers)
     if activation == None:
       activation = nn.Tanh
 
-    
     ##    Encoder: 
-    model = []
-    for i in range(depth):
-      dilation_size = 2 ** i
-      in_channels = input_size if i == 0 else hidden_layers[i-1]
-      model.append(nn.Conv1d(in_channels, hidden_layers[i],
-                             kernel_size, padding='same', dilation=dilation_size))
-      model.append(nn.Dropout(dropout))
-      model.append(activation())
-      model.append(nn.MaxPool1d(2))  
-    self.encoder = nn.Sequential(*model)
-    self.encoder.latent_size = hidden_layers[-1]
+    class Encoder(nn.Module):
+      def __init__(self):
+        super().__init__()
+        model = []
+        for i in range(depth):
+          dilation_size = 2 ** i
+          in_channels = input_size if i == 0 else hidden_layers[i-1]
+          model.append(nn.Conv1d(in_channels, hidden_layers[i],
+                                kernel_size, padding='same', dilation=dilation_size))
+          model.append(nn.Dropout(dropout))
+          model.append(activation())
+          model.append(nn.MaxPool1d(2))  
+        self._encoder = nn.Sequential(*model)
+        self.latent_size = self._encoder_dim()
+      
+      def _encoder_dim(self):
+        """gets endoder laten dimension
 
-    ##    Decoder:
-    model = []
-    for i in range(depth-1,-1,-1):
-      dilation_size = 2 ** i
-      out_channels = input_size if i == 0 else hidden_layers[i-1]
-      model.append(nn.Upsample(scale_factor=2))
-      model.append(nn.Conv1d(hidden_layers[i], out_channels,
-                             kernel_size=kernel_size, padding='same', dilation=dilation_size))
-      model.append(nn.Dropout(dropout))
-      model.append(activation())
-
-    self.decoder = nn.Sequential(*model)
+        Returns:
+            int: size of the latant dimension
+        """
+        x=torch.randn(1, input_size, input_length)
+        encode = self._encoder(x).reshape(1,-1) 
+        return encode.shape[1]
+      
+      def forward(self,x):
+        x = x.permute(0, 2, 1)
+        y = self._encoder(x)
+        return torch.squeeze(y,dim=1)    
+    
+    ##    Decoder:  
+    class Decoder(nn.Module):
+      def __init__(self):      
+        super().__init__()
+        model = []
+        for i in range(depth-1,-1,-1):
+          dilation_size = 2 ** i
+          out_channels = input_size if i == 0 else hidden_layers[i-1]
+          model.append(nn.Upsample(scale_factor=2))
+          model.append(nn.Conv1d(hidden_layers[i], out_channels,
+                                kernel_size=kernel_size, padding='same', dilation=dilation_size))
+          model.append(nn.Dropout(dropout))
+          model.append(activation())
+        self._decoder = nn.Sequential(*model)
+      
+      def forward(self,x):
+        x = torch.unsqueeze(x,dim=1)
+        y = self._decoder(x)
+        return y        
+  
+    self.encoder = Encoder()
+    self.decoder = Decoder()
 
 class AutoEncoder(nn.Module):
   """
