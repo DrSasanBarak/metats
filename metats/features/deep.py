@@ -314,7 +314,7 @@ class Encoder_Decoder_TCN():
           model.append(activation())
           model.append(nn.MaxPool1d(2))  
         self._encoder = nn.Sequential(*model)
-        self.latent_size = self._encoder_dim()
+        self.latent_size = np.prod(self._encoder_dim())
       
       def _encoder_dim(self):
         """gets endoder laten dimension
@@ -323,13 +323,13 @@ class Encoder_Decoder_TCN():
             int: size of the latant dimension
         """
         x=torch.randn(1, input_size, input_length)
-        encode = self._encoder(x).reshape(1,-1) 
-        return encode.shape[1]
+        encode = self._encoder(x) 
+        return [encode.shape[1], encode.shape[2]]
       
       def forward(self,x):
         x = x.permute(0, 2, 1)
         y = self._encoder(x)
-        return torch.squeeze(y,dim=1)    
+        return y.view(-1,self.latent_size)    
     
     ##    Decoder:  
     class Decoder(nn.Module):
@@ -347,9 +347,9 @@ class Encoder_Decoder_TCN():
         self._decoder = nn.Sequential(*model)
       
       def forward(self,x):
-        x = torch.unsqueeze(x,dim=1)
+        x = x.view(x.shape[0], hidden_layers[-1], -1)
         y = self._decoder(x)
-        return y        
+        return y.permute(0, 2, 1)       
   
     self.encoder = Encoder()
     self.decoder = Decoder()
