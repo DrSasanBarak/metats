@@ -88,9 +88,11 @@ class LSTMDecoder(nn.Module):
     h0, c0 = self.get_initial(bsize)
 
     out, _ = self.lstm(lstm_in, (h0, c0))
-    Y = 0.5 * (out[:, :, :self.output_size] + out[:, :, self.output_size:])
-    Y = Y.permute(1, 0, 2)
-    return Y
+    # average the result of two directions
+    if self.directions == 2:
+      out = 0.5 * (out[:, :, :self.output_size] + out[:, :, self.output_size:])
+    out = out.permute(1, 0, 2)
+    return out
 
 
 class GRUEncoder(nn.Module):
@@ -178,10 +180,12 @@ class GRUDecoder(nn.Module):
     h0 = self.get_initial(bsize)
 
     out, _ = self.gru(gru_in, h0)
-    Y = 0.5 * (out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:])
-    Y = Y.permute(1, 0, 2)
-    Y = self.proj(Y)
-    return Y
+    # average the result of two directions
+    if self.directions == 2:
+      out = 0.5 * (out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:])
+    out = out.permute(1, 0, 2)
+    out = self.proj(out)
+    return out
 
 
 class MLPEncoder(nn.Module):
