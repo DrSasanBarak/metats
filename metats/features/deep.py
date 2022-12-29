@@ -275,33 +275,30 @@ class MLPDecoder(nn.Module):
     Y = self.unflatten(Y)
     return Y
 
-
 class Encoder_Decoder_TCN():
   """
   A general class for Encoder decoder with 
   dilated Temporal Convolutional Networks (TCN).
-  *NOTE*: make sure `input_size` is devisible by $2 ^ {||{hidden\_layers}||_0}$.
+  *NOTE*: make sure `input_size` is devisible by $0.5 * 4 ^ {(||{hidden\_layers}||_0)-1}$.
   """
   def __init__(self, input_size, input_length, hidden_layers=(128,64),
-               kernel_size =8, dilation=2, activation=None, dropout=0.3):
+               activation=None, dropout=0.3):
     """
     inputs:
         input_size    : dimension of input series
         input_length  : length of input series
-        hidden_layers : a tuple of hidden layers dimension.
+        hidden_layers : a tuple of CNN channels dimension.
                            It's size determines model's depth, e.g., hidden_layers=(128,64,32) has depth three.
-        kernel_size   : a size of the convolving kernel
-        dilation      : Spacing between kernel elements. Default: 2
         activation    : a custom activation function which can be any PyTorch module supporting a backward pass,
                           if None passed, then the nn.Tanh() will be used
         dropout       : probability of an element to be zeroed. Default: 0.3
     """
     
-    if input_length % 2**len(hidden_layers)!=0:
-      raise ValueError(f"'Time series length' has to be divisible by number of "\
-                       f"'hidden_layers', but {input_length} is not divisible by {2**len(hidden_layers)}!")
+    depth = len(hidden_layers)    
+    if 0.5*input_length % 4**(depth-1)!=0:
+      raise ValueError(f"'Time series length': {input_length}, is not divisible by "\
+                       f"{(0.5*input_length/(4 ** (depth-1)))+1}!")
     
-    depth = len(hidden_layers)
     if activation == None:
       activation = nn.Tanh
 
@@ -313,11 +310,12 @@ class Encoder_Decoder_TCN():
         for i in range(depth):
           dilation_size = 2 ** i
           in_channels = input_size if i == 0 else hidden_layers[i-1]
+          kernel_size= int(0.5*input_length/(4 ** i))+1
           model.append(nn.Conv1d(in_channels, hidden_layers[i],
-                                kernel_size, padding='same', dilation=dilation_size))
+                                kernel_size, padding='valid', dilation=dilation_size))
           model.append(nn.Dropout(dropout))
           model.append(activation())
-          model.append(nn.MaxPool1d(2))  
+          model.append(nn.MaxPool1d(2, padding=1, dilation=2, stride=1))  
         self._encoder = nn.Sequential(*model)
         self.latent_size = np.prod(self._encoder_dim())
       
@@ -344,6 +342,7 @@ class Encoder_Decoder_TCN():
         for i in range(depth-1,-1,-1):
           dilation_size = 2 ** i
           out_channels = input_size if i == 0 else hidden_layers[i-1]
+          kernel_size= int(0.5*input_length/(4**i))+1
           model.append(nn.Upsample(scale_factor=2))
           model.append(nn.Conv1d(hidden_layers[i], out_channels,
                                 kernel_size=kernel_size, padding='same', dilation=dilation_size))

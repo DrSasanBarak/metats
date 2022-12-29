@@ -78,7 +78,7 @@ def main():
     
     # construct model
     EDTCN = Encoder_Decoder_TCN(input_size=data.shape[2], input_length=LEN_TS-FH,             
-                                hidden_layers=(4,1), kernel_size =4, dilation=2)
+                                hidden_layers=(4,1))
     enc = EDTCN.encoder
     dec = EDTCN.decoder
     ae = AutoEncoder(encoder=enc, decoder=dec)
