@@ -23,6 +23,8 @@ class MetaLearning():
         self.feature_generators = []
         self.base_forecasters = []
         self.base_forecasters_name = []
+        self.features_prefix_name = []
+        self.features_name = []
         self.meta_learner = None
         self.loss = loss
         self.reduction = reduction
@@ -32,10 +34,11 @@ class MetaLearning():
             from sklearn.decomposition import PCA
             self.reducer = PCA(n_components=self.reduction_dim)
     
-    def add_feature(self, feature_generator):
+    def add_feature(self, feature_generator, feature_name=""):
         """
         Add a feature generator to the pipeline
         """
+        self.features_prefix_name.append(feature_name)
         self.feature_generators.append(feature_generator)
     
     def add_forecaster(self, forecaster, forecaster_name=""):
@@ -118,10 +121,21 @@ class MetaLearning():
     def generate_features(self, Y, prediction=False):
         # generate meta features
         meta_features = []
-        for feature_generator in self.feature_generators:
+        for feature_generator, feature_prefix in zip(self.feature_generators, self.features_prefix_name):
             if (not prediction) or (not feature_generator.is_trainable()):
-                feature_generator.fit(Y) 
-            meta_features.append(feature_generator.transform(Y))
+                feature_generator.fit(Y)
+            single_meta_features = feature_generator.transform(Y)
+            features_dim = single_meta_features.shape[1] 
+            meta_features.append(single_meta_features)
+            # generate the labels for meta-features
+            if feature_prefix == "":
+                feature_prefix = f"F_{len(self.meta_features)}"
+            if features_dim == 1:
+                self.features_name.append(feature_prefix)
+            else:
+                names = [ '{}_{}'.format(feature_prefix, i) for i in range(features_dim) ]
+                self.features_name.extend(names)
+
         return np.hstack(meta_features)
     
     def generate_prediction(self, forecaster, Y, fh, forecast_dim):
@@ -229,7 +243,7 @@ class MetaLearning():
         result = np.vstack(selected_predictions)
         return result
 
-    def predict(self, Y, fh, forecast_dim=0, return_metalearning_data=False):
+    def predict(self, Y, fh, forecast_dim=0, return_metalearning_data=False, explain=None):
         """
         Predict using the meta-learner
         Args:
@@ -237,6 +251,7 @@ class MetaLearning():
             fh: forecast horizon for predicting
             forecast_dim: the dimension of the variable to be forecasted
             return_metalearning_data: if True, the meta-features, weights and base forecasts will be returned
+            explain: currently only 'shap' for tree-based meta-learners is supported
         Return:
             result: (numpy array) (num_series x forecast_horizon)
             if return_metalearning_data is True:
@@ -257,8 +272,18 @@ class MetaLearning():
         else:
             result = self.selection_predictions(weights, predictions)
 
-        if return_metalearning_data:
-            return result, predictions, weights, meta_features
-        
-        return result
+        metalearning_data = None
 
+        if return_metalearning_data:
+            metalearning_data = [predictions, weights, meta_features]
+
+        explanation_data = None
+        # explain the result
+        if explain == 'shap':
+            import shap
+            shap_explainer = shap.Explainer(self.meta_learner)
+            shap_values = shap_explainer(meta_features)
+            shap_values.feature_names = self.features_name
+            explanation_data = shap_values
+        
+        return result, metalearning_data, explanation_data
