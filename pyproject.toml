@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "metats"
-version = "0.1.5"
+version = "0.2.1"
 description = "Meta-Learning for Time Series Forecasting"
 readme = "README.md"
 authors = [{ name = "Sasan Barak", email = "s.barak@soton.ac.uk" },
@@ -20,27 +20,16 @@ classifiers = [
 ]
 keywords = ["timeseries", "metalearning", "forecasting", "unsupervised learning", "deeplearning", "machine learning"]
 
-dependencies = [
-    "darts",
-    "matplotlib",
-    "numpy",
-    "pandas",
-    "scikit-learn",
-    "scipy",
-    "seaborn",
-    "sktime",
-    "torch",
-    "tqdm",
-    "tsfresh",
-    "umap-learn",
-]
+dynamic = ["dependencies"]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 
 [project.optional-dependencies]
 dev = ["pytest", "pdoc"]
 
 [project.urls]
-Homepage = "https://amirabbasasadi.github.io/metats/"
+Homepage = "https://drsasanbarak.github.io/metats/"
 
 [project.scripts]
 metats = "metats.__main__:main"
