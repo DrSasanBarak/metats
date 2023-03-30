@@ -1,7 +1,4 @@
 import numpy as np
-from metats.forecasters.utils import is_sktime_forecaster, is_darts_forecaster
-from metats.forecasters.wrappers import DartsForecasterWrapper, SKTimeForecasterWrapper
-from sklearn.decomposition import PCA
 
 class MetaLearning():
     """
@@ -32,6 +29,7 @@ class MetaLearning():
         self.reduction_dim = reduction_dim
 
         if self.reduction == 'pca':
+            from sklearn.decomposition import PCA
             self.reducer = PCA(n_components=self.reduction_dim)
     
     def add_feature(self, feature_generator):
@@ -44,12 +42,19 @@ class MetaLearning():
         """
         Add a base forecaster to the pipeline
         """
+        from metats.forecasters.utils import is_sktime_forecaster, is_darts_forecaster, is_nixtla_stats_forecaster
         # checking for dart forecasters
         wrapped = forecaster
         if is_darts_forecaster(forecaster):
+            from metats.forecasters.wrappers import DartsForecasterWrapper
             wrapped = DartsForecasterWrapper(forecaster)
         elif is_sktime_forecaster(forecaster):
+            from metats.forecasters.wrappers import SKTimeForecasterWrapper
             wrapped = SKTimeForecasterWrapper(forecaster)
+        elif is_nixtla_stats_forecaster(forecaster):
+            from metats.forecasters.wrappers import NixtlaStatsForecasterWrapper
+            wrapped = NixtlaStatsForecasterWrapper(forecaster)
+
         # append the wrapped forecaster to the stack
         self.base_forecasters.append(wrapped)
         # generate a name for forecater

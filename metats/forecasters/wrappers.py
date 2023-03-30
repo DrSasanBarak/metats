@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from metats.forecasters import BaseForecaster
-from metats.forecasters.utils import is_sktime_forecaster, is_darts_forecaster
+from metats.forecasters.utils import is_sktime_forecaster, is_darts_forecaster, is_nixtla_stats_forecaster
 
 
 
@@ -67,4 +67,41 @@ class SKTimeForecasterWrapper(BaseForecaster):
             self.sktime_model.fit(y=Y[i, :, forecast_dim], fh=fh)
             predictions[i, :] = np.squeeze(self.sktime_model.predict())
         
+        return predictions
+
+class NixtlaStatsForecasterWrapper(BaseForecaster):
+    """
+    A Wrapper class for Nixtla statistical forecasters
+    """
+    def __init__(self, nixtla_model):
+        """
+        inputs:
+            nixtla_model: a darts models which must be checked using is_nixtla_stats_forecaster
+        """
+        if not is_nixtla_stats_forecaster(nixtla_model):
+            raise ValueError('The input is not a valid nixtla forecaster')
+
+        self.nixtla_model = nixtla_model
+    
+    def predict(self, Y, fh, forecast_dim):
+        """
+        inputs:
+            Y: the timeseries (numpy array) (num_series x series_length x covariates_dim)
+            fh: forecast horizon
+            forecast_dim: the dimension of the series to be generated
+        """
+
+        # prepare data for nixtla
+        data_df = pd.DataFrame(Y[:, :, forecast_dim])
+        data_df['unique_id'] = data_df.index
+        nixtla_df = data_df.melt(var_name='ds', value_name='y', id_vars=['unique_id'])
+        # fit the nixtla frecaster
+        self.nixtla_model.fit(nixtla_df)
+        # generting and collecting the predictions
+        pred_df = self.nixtla_model.predict(h=fh)
+        predictions = []
+        for i in range(Y.shape[0]):
+            single_pred = pred_df[pred_df.index==i][pred_df.columns[-1]].values
+            predictions.append(single_pred.reshape((1, -1)))
+        predictions = np.concatenate(predictions, axis=0)
         return predictions

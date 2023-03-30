@@ -16,4 +16,11 @@ def is_darts_forecaster(forecaster):
     """
     return isinstance(forecaster, ForecastingModel)
 
+def is_nixtla_stats_forecaster(forecaster):
+    from statsforecast import StatsForecast
+    """
+    Check if a given object is a nixtla statistical forecaster
+    """
+    return isinstance(forecaster, StatsForecast)
+
     
