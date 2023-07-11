@@ -129,7 +129,7 @@ class MetaLearning():
             meta_features.append(single_meta_features)
             # generate the labels for meta-features
             if feature_prefix == "":
-                feature_prefix = f"F_{len(self.meta_features)}"
+                feature_prefix = f"F_{len(self.features_name)}"
             if features_dim == 1:
                 self.features_name.append(feature_prefix)
             else:
