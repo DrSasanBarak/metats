@@ -162,3 +162,7 @@ pipeline.predict(data, fh=7)
 
 
 We wish to see your name in the list of contributors, So we are waiting for pull requests!
+
+## Papers using MetaTS
+Below is a list of projects using MetaTS. If you have used MetaTS in a project, you're welcome to make a PR to add it to this list.
+* [Retail time series forecasting using an automated deep meta-learning framework](https://github.com/mohammadjoshaghani/retail_metalearning)
